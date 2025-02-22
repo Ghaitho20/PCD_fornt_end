@@ -19,31 +19,31 @@ const NavBar = () => {
       </div>
 
       {/* Main Navigation */}
-      <div className="bg-white py-4 px-6 flex  justify-between ">
+      <div className="bg-white py-4 px-6 flex justify-between items-center ">
+
         {/* Logo */}
         <img src={logo} alt="CNOPT Logo" className="h-20 w-20" />
         
 
         {/* Buttons */}
-        <div className="flex  gap-4  mt-2  ">
-          <button className="bg-[#333D79] text-white px-2 py-0 rounded-full ">Espace Pharmacien</button>
-          <div className="">
-            <ul className="flex justify-center gap-6  py-3 text-sm">
-              <li className="text-green-600 font-semibold cursor-pointer">Accueil</li>
-              <li className="cursor-pointer">L'ordre</li>
-              <li className="cursor-pointer">Actualités</li>
-              <li className="cursor-pointer">Secteurs pharmaceutiques</li>
-              <li className="cursor-pointer">Espace étudiant</li>
-              <li className="cursor-pointer">Espace Pharmacien</li>
-              <li className="cursor-pointer">Pharmacademy</li>
-              <li className="cursor-pointer">Apothitech</li>
-            </ul>
+        
+          <div className= "">
+            <div className="flex justify-center gap-6  py-3 text-sm">
+                <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Accueil</a>
+                <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Brochure</a>
+                <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Statistique</a>
+                <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Contactez-nous</a>  
+
+            </div>
           </div>
-        </div>
+
+          <button className="bg-[#333D79] text-white px-4 py-1  rounded-full ">Espace Médecin</button>
+
+        
       </div>
 
       {/* Menu */}
-      <div className="border-t border-gray-300"></div>
+      <div className="border-t border-[#333D79]-300"></div>
     </nav>
   );
 };
