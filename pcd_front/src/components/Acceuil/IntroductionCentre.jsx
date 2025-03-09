@@ -23,7 +23,7 @@ const IntroductionCentre = ()=>{
       {/* Section Accueil */}
       <section className="w-full p-10 bg-white">
         <h2 className="text-3xl font-bold mb-2 text-gray-700 ">Bienvenu au CDMO</h2>
-        <p className="max-w-2xl mx-auto text-gray-600 mb-4">
+        <p className="max-w-2xl mx-auto text-gray-600 mb-4">  
         Chères consœurs, chers confrères,
 
       C’est avec un immense plaisir que je vous accueille sur le nouveau site web de notre Centre , conçu pour répondre à vos attentes et refléter les évolutions contemporaines.

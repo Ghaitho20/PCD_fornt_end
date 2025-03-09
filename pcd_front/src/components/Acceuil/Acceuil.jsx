@@ -6,9 +6,14 @@ import vueInternalCentre from "../../img/internal_vue_centre.jpg";
 
 import Membre_projet_def from "./Membre_projet_def";
 
+import Actualite from "./Actualites";
+
 import NavBar from "../NavBar/NavBar";
 import IntroductionCentre from "./IntroductionCentre";
 import Footer from "../Footer/Footer";
+
+import ContactSection from "./horraire";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 /*images fetched from the database*/ 
 const images = [
@@ -58,13 +63,13 @@ export default function Acceuil() {
         onClick={() => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)}
         className="absolute left-4 top-1/2 transform -translate-y-1/2  p-2 rounded-full shadow-lg"
       >
-        ◀
+        <ArrowLeft className="bg-gray-700 rounded-full" />
       </button>
       <button
         onClick={() => setCurrentIndex((prev) => (prev + 1) % images.length)}
         className="absolute right-4 top-1/2 transform -translate-y-1/2  p-2 rounded-full shadow-lg"
       >
-        ▶
+        <ArrowRight className="bg-gray-700 rounded-full"/>  
       </button>
     </div>
 
@@ -72,18 +77,14 @@ export default function Acceuil() {
 
     <IntroductionCentre></IntroductionCentre>
 
-
-
-
-
-
-
-
-
+    <Actualite/>
     <Membre_projet_def></Membre_projet_def>
+    <ContactSection></ContactSection>
 
+    
 
     <Footer></Footer>
+
     </>
   );
 }

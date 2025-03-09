@@ -1,53 +1,47 @@
+import React, { useEffect } from 'react';
+import './foooter.css'; // Import the CSS file
+import 'particles.js'; // Import globally to access via window
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import logo from './img/logo.png'
 
-import logo from "../../img/logoCentre.png";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaPhone, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
-
-
-const FooterComp = () =>{
-
-
+const Footer = () => {
     return (
-        <footer className=" bg-[#2E315F] py-8 text-white">
-        <div className=" container mx-auto p-10 flex gap-10">
-            {/* Contact Section */}
-        <div>
-          <img src={logo} alt="CNOPT Logo" className="w-32 mb-4" />
-          <h3 className="text-green-400 font-bold text-lg">Contactez-Nous</h3>
-          <p className="flex items-center gap-2 mt-2"><FaMapMarkerAlt /> 56, Rue Ibn Charaf,  Bâb Saadoun Tunisie</p>
-          <p className="flex items-center gap-2 mt-2"><FaPhone /> +216 71 79 57 22</p>
-          <p className="flex items-center gap-2 mt-2"><FaEnvelope /> info@cnopt.tn</p>
-          <div className="flex gap-4 mt-4">
-            <a href="#" className="text-white text-2xl"><FaFacebookF /></a>
-            <a href="#" className="text-white text-2xl"><FaInstagram /></a>
-            <a href="#" className="text-white text-2xl"><FaLinkedinIn /></a>
-          </div>
-        </div>
+        <footer className="footer">
+            <div className="footer-container">
+                {/* Mission Section */}
+                <div className="footer-column mission">
+                    <h3><img  className="logoStyle" src={logo}/> Marrow Transplant Center</h3>
+                    <p>Saving lives through advanced marrow transplant care and research.</p>
+                </div>
 
-        {/* Sitemap Section */}
-        <div>
-          <h3 className="text-green-400 font-bold text-lg">Sitemap</h3>
-          <ul className="mt-2 space-y-2">
-            {["Accueil", "Brochure", "Actualités", "Statistique","Conatctez-nous", "Espace Médecin"].map((item) => (
-              <li key={item}><a href="#" className="hover:underline">{item}</a></li>
-            ))}
-          </ul>
-        </div>
+                {/* Contact Section */}
+                <div className="footer-column contact">
+                    <h3>Contact</h3>
+                    <p><i className="fas fa-envelope"></i> info@marrowcenter.org</p>
+                    <p><i className="fas fa-phone"></i> Phone: (800) 555-0123</p>
+                    <p><i className="fas fa-map-marker-alt"></i> 456 Hope Ave, Healing City, HC 90210</p>
+                </div>
 
-        {/* Extra Links Section */}
-        <div>
-          <ul className="mt-10 space-y-2">
-            <li><a href="#" className="hover:underline">Trouver </a></li>
-            <li><a href="#" className="hover:underline">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Copyright */}
-      <div className="border-t border-green-500 text-center text-sm py-4 mt-6">
-        © Copyright 2025 CGMO. All rights reserved <span className="text-green-400">GHI.tech</span>
-      </div>
-    </footer>
-  );
+                {/* Social Media Section */}
+                <div className="footer-column social">
+                    <h3>Connect With Us</h3>
+                    <p>
+                        <a href="https://facebook.com/marrowcenter" target="_blank" rel="noopener noreferrer">
+                            <i className="fab fa-facebook-f"></i> Facebook
+                        </a>
+                    </p>
+                    <p>
+                        <a href="https://instagram.com/marrowcenter" target="_blank" rel="noopener noreferrer">
+                            <i className="fab fa-instagram"></i> Instagram
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <div className="footer-bottom">
+                <p>&copy; 2023 Marrow Transplant Center. All Rights Reserved.</p>
+            </div>
+        </footer>
+    );
 };
 
-export default FooterComp;
+export default Footer;
