@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import './foooter.css'; // Import the CSS file
-import 'particles.js'; // Import globally to access via window
+import '../../assets/css/footer/footer.css';
+import 'particles.js'; 
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import logo from './img/logo.png'
+import logo from '../../assets/images/dashboard/logo3.png'
 
 const Footer = () => {
     return (
