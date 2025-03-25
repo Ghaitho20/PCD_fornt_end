@@ -95,6 +95,28 @@ const ActualiteComp = () => {
             <div className="flex justify-center "> 
             <button className="rounded-full bg-blue-600 p-3 text-white flex flex-col justify-center items-center ">Voir plus</button>
             </div>
+           <Swiper
+                 // Classe CSS pour personnaliser le style du swiper
+                  // Modules activés : Autoplay (défilement automatique), Pagination (pagination cliquable), Navigation (navigation avec boutons)
+                 // Autoplay avec délai de 5 secondes et activation même en cas d'interaction
+                 // Pagination activée et rendue cliquable
+                 // Navigation activée (flèches de navigation)
+                      // Affichage du curseur de la souris comme une main lors du survol des slides
+                // Affiche 3 slides par vue par défaut
+               // Vitesse de transition des slides (en millisecondes)
+                 // Espacement de 20px entre les slides
+                breakpoints={{
+                    500: { slidesPerView: 1 },  // À partir de 500px, afficher 1 slide
+                    700: { slidesPerView: 2 },  // À partir de 700px, afficher 2 slides
+                    1024: { slidesPerView: 3 }  // À partir de 1024px, afficher 3 slides
+                }} // Pour chaque élément de 'news', afficher un SwiperSlide avec un NewsItem 
+            >
+                {news.map((item,index)=>(
+                    <SwiperSlide>item</SwiperSlide>
+
+                ))}
+
+            </Swiper>
             
         </section>
     );

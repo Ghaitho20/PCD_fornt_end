@@ -1,15 +1,41 @@
 import ChatbotIcon from "./ChatbotIcon";
 import "./ChatBot.css"
 import ChatForm from "./ChatForm";
-import { useState,useEffect } from "react";
+import { useState,useEffect,useRef } from "react";
 import ChatMessage from "./ChatMessage";
+import { companyInfo } from "./companyInfo";
+
+
+
 
 
 const ChatBot = ()=>{
 
-    const [chatHistory,setChatHistory]= useState([]);
+    const [chatHistory,setChatHistory]= useState([{
+        hideInChat:true,
+        role:"model",
+        text: companyInfo
+    }
 
-    const generateBotResponse = async (history)=>{
+    ]);
+    const chatBodyRef = useRef();
+    const [showChatBot, setShowChatBot]= useState(false )
+
+
+
+      const generateBotResponse = async (history)=>{
+
+        //Helper function to update chatHistory 
+        const updateHistory = (text ,isError = false )=>{
+            setChatHistory(prevChatHistory => [
+                ...prevChatHistory.filter(msg => msg.text !== "Thinking..."), 
+                { role: "model", text ,isError}
+            ]);
+            
+        }
+
+
+
         //format chat history for api request 
         history = history.map(({role,text})=>({role,parts:[{text}]}));
 
@@ -23,14 +49,23 @@ const ChatBot = ()=>{
             const response = await fetch (process.env.REACT_APP_API_URL, requestOptions);
             const data = await response.json();
             if (!response.ok)throw new Error (data.error.message || "Something went wrong");
-            console.log(data)
+            //console.log(data)
+            const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g,"$1").trim();
+            //Clean and Update the chat history with the bot's response
+            updateHistory(apiResponseText);
 
         }catch(error){
-            console.log(error);
+            console.log("error");
+            updateHistory(error.message , true );
 
         }
 
     }
+
+    useEffect(()=>{
+        //auto scroll whenever the chat history changes
+        chatBodyRef.current.scrollTo({top: chatBodyRef.current.scrollHeight,behavior:"smooth"});
+    },[chatHistory]);// Runs whenever chatHistory changes
 
 
 
@@ -43,8 +78,20 @@ const ChatBot = ()=>{
 
 
     return (
-        <div className="container  ">
-            <div className="chatbot-popup ">
+        <div className= {`container ${ showChatBot ?"show-chatbot":"" }`}>
+
+            <button id="chatbot-toggler" onClick={()=>setShowChatBot(prev =>!prev)}>
+                <span className="material-symbols-rounded">
+                    mode_comment
+                </span>
+                <span className="material-symbols-rounded">
+                    close
+                </span>
+
+            </button>
+
+
+            <div className="chatbot-popup">
 
                 {/*Chatbot Header */}
                 <div className="chat-header">
@@ -52,15 +99,16 @@ const ChatBot = ()=>{
                         <ChatbotIcon></ChatbotIcon>
                         <h2 className="logo-text">chatbot</h2>
                     </div>
-                        <button class="material-symbols-rounded">
+                        <button class="material-symbols-rounded" onClick={()=>setShowChatBot(prev =>!prev)}>
                             keyboard_arrow_down
                         </button>
                     
 
                 </div>
 
+
                 {/*Chatbot Body */}
-                <div className="chat-body">
+                <div className="chat-body" ref={chatBodyRef}>
                     <div className="message bot-message">
                         <ChatbotIcon></ChatbotIcon>
                         <p className="message-text">
@@ -72,10 +120,6 @@ const ChatBot = ()=>{
                           <ChatMessage chat={chat} key={index} />
                        
                     ))}
-                  
-
-
-
                 </div>
 
 

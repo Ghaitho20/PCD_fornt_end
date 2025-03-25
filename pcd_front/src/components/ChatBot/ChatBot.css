@@ -17,13 +17,78 @@ body{
     height: 100vh;
 
 }*/
+
+.container{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    width: 100%;
+
+    /*background: linear-gradient(#F4F0FF,#DACDFF);*/
+    
+    height: 100vh;
+    position: fixed;
+    z-index: 55;
+
+    
+}
+.container.show-chatbot{
+    position: fixed;
+    z-index: 55;
+}
+
+#chatbot-toggler{
+    position: fixed;
+    bottom: 30px;
+    right: 35px;
+    background-color: #593bab;
+    cursor:pointer;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease ;
+}
+#chatbot-toggler span {
+    color: #fff;
+    position: fixed;  
+}
+
+#chatbot-toggler span:last-child,
+.container.show-chatbot #chatbot-toggler span:first-child{
+    opacity: 0;
+}
+.container.show-chatbot #chatbot-toggler span:last-child{
+    opacity: 1;
+}
+
+.container.show-chatbot #chatbot-toggler {
+    transform: rotate(90deg);
+
+}
+
 .chatbot-popup{
     background:#fff ;
     overflow: hidden ;
     width :420px;
     border-radius:15px;
     box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1);
-    position: relative;
+    position: fixed;
+    bottom: 90px;
+    right: 35px;
+    opacity:0 ;
+    pointer-events: none ;
+    transform: scale(0.2);
+    transform-origin: bottom right;
+    transition: all 0.1s ease ;
+}
+.container.show-chatbot .chatbot-popup{
+    opacity: 1;
+    pointer-events: auto ;
+    transform: scale(1);
 
 }
 
@@ -90,6 +155,9 @@ body{
     display: flex;
     gap: 11px ;
     align-items: center;
+}
+.chat-body .message.error .message-text{
+   color:red ;
 }
 
 .chat-body .bot-message svg{

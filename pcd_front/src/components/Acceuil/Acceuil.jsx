@@ -14,6 +14,7 @@ import Footer from "../Footer/Footer";
 
 import ContactSection from "./horraire";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import ChatBot from "../ChatBot/ChatBot";
 
 /*images fetched from the database*/ 
 const images = [
@@ -81,10 +82,8 @@ export default function Acceuil() {
     <Membre_projet_def></Membre_projet_def>
     <ContactSection></ContactSection>
 
-    
-
+    <ChatBot></ChatBot> 
     <Footer></Footer>
-
     </>
   );
 }
