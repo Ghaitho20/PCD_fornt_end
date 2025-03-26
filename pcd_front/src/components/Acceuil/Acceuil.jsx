@@ -9,6 +9,7 @@ import Membre_projet_def from "./Membre_projet_def";
 import Actualite from "./Actualites";
 
 import NavBar from "../NavBar/NavBar";
+import Header from "../header/header";
 import IntroductionCentre from "./IntroductionCentre";
 import Footer from "../footer/footer";
 
@@ -37,7 +38,7 @@ export default function Acceuil() {
 
   return (
     <>
-    <NavBar></NavBar>
+    
     <div className="relative w-full h-[700px]">
        
       {images.map((image, index) => (

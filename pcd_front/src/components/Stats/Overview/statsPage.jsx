@@ -7,6 +7,7 @@ import TransplantDemographicsChart from './transplantDemographics';
 import ActivitePharmacie from './activitePharmacie';
 import Footer from '../../footer/footer';
 import '../../../assets/css/Stats/Overview/paragraph.css';
+import ChatBot from '../../ChatBot/ChatBot';
 function StatsPage() {
   return (
     <>
@@ -58,6 +59,7 @@ function StatsPage() {
           <ActivitePharmacie />
         </div>
       </div>
+      <ChatBot/>
       <Footer />
     </>
   );

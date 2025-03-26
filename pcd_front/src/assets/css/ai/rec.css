@@ -4,7 +4,10 @@
 /* AI Recommendation Component Styles */
 .ai-recommendation-container {
   max-width: 800px;
-  margin: 40px auto;
+  margin: 0px auto;
+  margin-bottom: 50px;
+  margin-top: 200px;
+  
   padding: 30px;
   background: #ffffff;
   border-radius: 15px;

@@ -5,6 +5,9 @@ import leukemia from '../../../assets/images/Stats/DiseaseOverview/leukemia.jpg'
 import anemia from '../../../assets/images/Stats/DiseaseOverview/anemia.jpg';
 import myeloma from '../../../assets/images/Stats/DiseaseOverview/myoleme.jpg';
 import Footer from '../../footer/footer';
+import ChatBot from "../../ChatBot/ChatBot";
+
+
 const DiseaseOverview = () => {
   const diseases = [
     {
@@ -34,9 +37,9 @@ const DiseaseOverview = () => {
   ];
 
   return (
-    <div className="disease-overview-container">
+    <div className="disease-overview-container ">
       
-      <h1 className="section-title">Disease Overview</h1>
+      <h1 className="section-title mt-[150px]">Disease Overview</h1>
       <p className="section-subtitle">
         Explore the conditions we treat at the Marrow Transplant Center.
       </p>
@@ -59,6 +62,7 @@ const DiseaseOverview = () => {
           </div>
         </div>
       ))}
+      <ChatBot/>
     <Footer/>
     </div>
   );
