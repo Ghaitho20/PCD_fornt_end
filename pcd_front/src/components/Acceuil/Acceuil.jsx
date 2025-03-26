@@ -10,7 +10,7 @@ import Actualite from "./Actualites";
 
 import NavBar from "../NavBar/NavBar";
 import IntroductionCentre from "./IntroductionCentre";
-import Footer from "../Footer/Footer";
+import Footer from "../footer/footer";
 
 import ContactSection from "./horraire";
 import { ArrowLeft, ArrowRight } from "lucide-react";

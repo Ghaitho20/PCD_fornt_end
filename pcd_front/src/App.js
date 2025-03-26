@@ -1,14 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
-import Navbar from './components/NavBar/NavBar';
-import  ChatBot from './components/ChatBot/ChatBot';
-import ALL from './components/allWork';
-import Header from './components/header/header';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import EditStatisticsPage from "./components/Stats/editStatsPage/EditStatisticsPage";
 
-function App() {
-  
-  return <ALL/>
- 
-}
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<EditStatisticsPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;
