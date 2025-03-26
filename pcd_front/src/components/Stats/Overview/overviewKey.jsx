@@ -35,7 +35,7 @@ const Box = ({ logo, title, color, number }) => {
 
   export const PatientBox = () => {
     return (
-        <div className= "patientBox" style={{ display: "flex", justifyContent: "space-between", width: "80%", margin: "50px 0px"}}>
+        <div className= "patientBox" style={{ display: "flex", justifyContent: "space-between", width: "80%", margin: "100px  0px"}}>
             <Box logo={patientLogo} title="total patients" color="blue" number="22410" />
             <Box logo={transplantLogo} title="total transplants" color="#2ecc71" number="365" />
             <SurvivalBox />

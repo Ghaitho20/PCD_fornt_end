@@ -6,6 +6,7 @@ import sinkGerm from '../../../assets/images/Stats/Hygiene/sinkGerm.jpg';
 import Germ from '../../../assets/images/Stats/Hygiene/Germ.jpg';
 import SelectionBar from "./selectionBar";
 import Footer from '../../footer/footer';
+import ChatBot from "../../ChatBot/ChatBot";
 
 
 const Hygiene = () => {
@@ -37,8 +38,8 @@ const Hygiene = () => {
   ];
 
   return (
-    <div className="disease-overview-container">
-        <div className="selectionBar-class">
+    <div className="disease-overview-container ">
+        <div className="selectionBar-class mt-[150px]">
             <div className="section-title">Visualize Germs and Disinfectants charts</div>
             <SelectionBar/>
         </div>
@@ -65,6 +66,7 @@ const Hygiene = () => {
           </div>
         </div>
       ))}
+       <ChatBot/>
       <Footer/>
     </div>
   );
