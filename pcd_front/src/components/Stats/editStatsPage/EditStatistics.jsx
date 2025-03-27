@@ -80,7 +80,7 @@ const EditStatistics = () => {
         </div>
 
         {/* Submit button */}
-        <button type="submit">Update Statistics</button>
+        <button className='editStatistics-button' type="submit">Update Statistics</button>
       </form>
     </div>
   );

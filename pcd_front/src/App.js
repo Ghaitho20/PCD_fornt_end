@@ -9,17 +9,7 @@ import Acceuil from './components/Acceuil/Acceuil';
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Header />
-      <Acceuil />
-
-      <Routes>
-        <Route path="/" element={<EditStatisticsPage />} />
-      </Routes>
-
-      <ChatBot />
-    </BrowserRouter>
+    <ALL/>
   );
 };
 

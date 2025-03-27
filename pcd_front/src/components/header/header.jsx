@@ -29,6 +29,7 @@ const TopBar = () => {
 };
 
 const Header = ({superUser,User}) => {
+  console.log('superUser:', superUser, 'User:', User);
   return (
     <nav className= "fixed  z-50 w-full top-0" >
       <TopBar/>
@@ -40,7 +41,7 @@ const Header = ({superUser,User}) => {
 
 const Header1 = ({superUser,User}) => {
 
-
+  console.log('superUser:', superUser, 'User:', User);
    const [isOpen,setIsOpen] = useState(false);
   
     const handleDialogConn = ()=>{
@@ -67,12 +68,14 @@ const Header1 = ({superUser,User}) => {
       <nav className="nav-menu flex-grow flex justify-center">
         <ul className="nav-list flex gap-8">
           <li className="nav-item">
-            <a className="nav-link" href="/">Homepage</a>
+            <Link className="nav-link" to="/Homepage">
+              Homepage
+            </Link>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="/brochure.pdf" target="_blank" rel="noopener noreferrer">
-              Brochure
-            </a>
+            <Link className="nav-link" to="/Brochure">
+                Brochure
+            </Link>
           </li>
           <li className="nav-item dropdown-custom">
             <span className="nav-link dropdown-toggle">Statistics</span>
@@ -103,17 +106,18 @@ const Header1 = ({superUser,User}) => {
           </li>)}
 
           {superUser && (<li className="nav-item">
-            <Link className="nav-link" to="#">
+            <Link className="nav-link" to="/Calendar">
               Calendar
             </Link>
 
           </li>)}
-          {superUser && (<li className="nav-item">
-            <Link className="nav-link" to="#">
-              Edit Statistics
-            </Link>
-
-          </li>)}
+          {superUser && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/edit-stats">
+                Edit Statistics
+              </Link>
+            </li>
+          )}
 
 
           
@@ -141,7 +145,7 @@ const Header1 = ({superUser,User}) => {
 
 
 
-        {(superUser || User) &&(<button>
+    {(superUser || User) &&(<button>
            <FaFacebookMessenger/>
         </button>)}
         {(superUser || User) &&(<button>

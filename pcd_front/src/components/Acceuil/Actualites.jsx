@@ -64,7 +64,9 @@ const ActualiteComp = () => {
             
 
              <div className="flex flex-col items-center space-x-2 pb-4">
-                <h1 className="text-gray-700 poppins text-3xl">Notre <span className="text-blue-600 font-semibold select-none">Actualité</span></h1>
+             <span className="text-blue-600 font-semibold select-none text-[28px]">
+                Notre Actualité
+                </span>
                 <div className="bg-blue-600 flex items-center justify-center w-16 h-1 mt-2 rounded-full"></div>
             </div>
   
