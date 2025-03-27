@@ -6,10 +6,11 @@ import StatsPage from './Stats/Overview/statsPage';
 import DiseaseOverview from './Stats/DiseaseOverview/diseaseOverview';
 import Hygiene from './Stats/Hygiene/hygiene'
 import Acceuil from './Acceuil/Acceuil';
+import EditStatisticsPage from './Stats/editStatsPage/EditStatisticsPage';
 
 const ALL = () => {
-  let superUser = false;
-  let User =  false;
+  let superUser = true;
+  let User =  true;
   return (
     <Router>
       

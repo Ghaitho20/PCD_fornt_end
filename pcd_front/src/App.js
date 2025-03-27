@@ -6,9 +6,15 @@ import ChatBot from './components/ChatBot/ChatBot';
 import ALL from './components/allWork';
 import Header from './components/header/header';
 import Acceuil from './components/Acceuil/Acceuil';
+import ChatsPage from "./components/forum/ChatsPage";
 
 const App = () => {
-  return (
+  /*const dummyUser = { username: "testUser", secret: "1234" }; // Fake user data
+ 
+    
+
+     <ChatsPage user={dummyUser} />*/
+     return ( 
     <BrowserRouter>
       <Navbar />
       <Header />

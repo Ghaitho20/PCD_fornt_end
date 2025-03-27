@@ -108,12 +108,13 @@ const Header1 = ({superUser,User}) => {
             </Link>
 
           </li>)}
-          {superUser && (<li className="nav-item">
-            <Link className="nav-link" to="#">
-              Edit Statistics
-            </Link>
-
-          </li>)}
+          {superUser && (
+            <li className="nav-item">
+              <Link className="nav-link" to="">
+                Edit Statistics
+              </Link>
+            </li>
+           )}
 
 
           
