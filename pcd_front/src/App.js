@@ -9,23 +9,10 @@ import Acceuil from './components/Acceuil/Acceuil';
 import ChatsPage from "./components/forum/ChatsPage";
 
 const App = () => {
-  /*const dummyUser = { username: "testUser", secret: "1234" }; // Fake user data
- 
-    
 
-     <ChatsPage user={dummyUser} />*/
-     return ( 
-    <BrowserRouter>
-      <Navbar />
-      <Header />
-      <Acceuil />
+  return (
+    <ALL/>
 
-      <Routes>
-        <Route path="/" element={<EditStatisticsPage />} />
-      </Routes>
-
-      <ChatBot />
-    </BrowserRouter>
   );
 };
 

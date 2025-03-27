@@ -108,7 +108,7 @@ const TransplantDiseasesInput = ({ onSubmit }) => {
 
       {error && <p className="error">{error}</p>}
 
-      <button onClick={handleAdd}>Add Disease</button>
+      <button  className= 'my-button-transplantDiseaseInput'onClick={handleAdd}>Add Disease</button>
 
       <div className="diseases-list">
         {diseases.map((d, index) => (
@@ -116,14 +116,14 @@ const TransplantDiseasesInput = ({ onSubmit }) => {
             <span>
               {d.disease}: {d.percentage}%
             </span>
-            <button onClick={() => handleRemove(index)}>Remove</button>
+            <button  className= 'my-button-transplantDiseaseInput' onClick={() => handleRemove(index)}>Remove</button>
           </div>
         ))}
       </div>
 
       <p>Total Percentage: {totalPercentage.toFixed(2)}%</p>
 
-      <button onClick={handleSubmit}>Submit</button>
+      <button className= 'my-button-transplantDiseaseInput' onClick={handleSubmit}>Submit</button>
     </div>
   );
 };

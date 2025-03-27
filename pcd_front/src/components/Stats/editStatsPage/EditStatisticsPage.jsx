@@ -7,7 +7,8 @@ import TransplantActivityInput from './TransplantActivityInput';
 import TransplantDiseasesInput from './TransplantDiseasesInput';
 import '../../../assets/css/Stats/editStatsPage/EditStatisticsPage.css';
 import Footer from '../../footer/footer';
-import Header from '../../header/header'
+import ChatBot from '../../ChatBot/ChatBot';
+
 const EditStatisticsPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
 
@@ -38,8 +39,7 @@ const EditStatisticsPage = () => {
 
   return (
     <>
-        <Header/>
-        <div className="edit-statistics-page">
+      <div className="edit-statistics-page">
       <h1>Edit Statistics</h1>
       <div className="select-container">
         <label htmlFor="stat-select">Select the statistic to update:</label>
@@ -56,7 +56,7 @@ const EditStatisticsPage = () => {
       <div className="component-container">
         {renderComponent()}
       </div>
-      
+      <ChatBot/>
     </div>
     <Footer/>
     </>
