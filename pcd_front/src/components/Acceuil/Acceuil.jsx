@@ -2,19 +2,11 @@ import { useState, useEffect } from "react";
 import vueExterneCentre from "../../img/vue_externe_centre.png";
 import medicalImage from "../../img/medical_image.jpg";
 import vueInternalCentre from "../../img/internal_vue_centre.jpg";
-
-
 import Membre_projet_def from "./Membre_projet_def";
-
 import Actualite from "./Actualites";
-
-import NavBar from "../NavBar/NavBar";
-import Header from "../header/header";
 import IntroductionCentre from "./IntroductionCentre";
 import Footer from "../footer/footer";
-
 import ContactSection from "./horraire";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import ChatBot from "../ChatBot/ChatBot";
 
 /*images fetched from the database*/ 
@@ -23,7 +15,6 @@ const images = [
   { src: medicalImage , text: "Découvrez nos services innovants" },
   { src: vueInternalCentre , text: "Rejoignez notre communauté" },
 ];
-
 
 export default function Acceuil() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,9 +29,7 @@ export default function Acceuil() {
 
   return (
     <>
-    
     <div className="relative w-full h-[700px]">
-       
       {images.map((image, index) => (
         <div
           key={index}
@@ -56,33 +45,28 @@ export default function Acceuil() {
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <h2 className="text-white text-3xl font-bold  ">{image.text}</h2>
           </div>
-
         </div>
       ))}
 
       {/* Boutons de navigation */}
       <button
         onClick={() => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length)}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2  p-2 rounded-full shadow-lg"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 p-4 text-4xl text-white"
       >
-        <ArrowLeft className="bg-gray-700 rounded-full" />
+        &lt;
       </button>
       <button
         onClick={() => setCurrentIndex((prev) => (prev + 1) % images.length)}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2  p-2 rounded-full shadow-lg"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 p-4 text-4xl text-white"
       >
-        <ArrowRight className="bg-gray-700 rounded-full"/>  
+        &gt;
       </button>
     </div>
 
-  
-
     <IntroductionCentre></IntroductionCentre>
-
     <Actualite/>
     <Membre_projet_def></Membre_projet_def>
     <ContactSection></ContactSection>
-
     <ChatBot></ChatBot> 
     <Footer></Footer>
     </>

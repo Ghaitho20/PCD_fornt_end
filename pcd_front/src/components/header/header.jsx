@@ -109,15 +109,34 @@ const Header1 = ({superUser,User}) => {
             <Link className="nav-link" to="/Calendar">
               Calendar
             </Link>
+            </li>)}
 
-          </li>)}
+          {/** drop 2 */}
+          {superUser && (
+            <li className="nav-item dropdown-custom">
+            <span className="nav-link dropdown-toggle">Edit</span>
+            <ul className="dropdown-menu-custom">
+              <li>
+                <Link className="dropdown-item" to="/edit/news">
+                  News
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/edit/stats">
+                  Statistics
+                </Link>
+              </li>
+            </ul>
+          </li>) }
+
+
           {superUser && (
             <li className="nav-item">
-              <Link className="nav-link" to="/edit-stats">
-                Edit Statistics
+              <Link className="nav-link" to="/manage-accounts">
+                Manage accounts
               </Link>
             </li>
-          )}
+            )}
 
 
           
