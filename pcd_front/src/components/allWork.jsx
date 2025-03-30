@@ -12,7 +12,8 @@ import EditNewsPage from './edit/editNews';
 
 const ALL = () => {
   let superUser = true;
-  let User = true;
+
+  let User =  true;
 
   return (
     <Router>

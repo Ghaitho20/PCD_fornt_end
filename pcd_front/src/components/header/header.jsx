@@ -132,11 +132,16 @@ const Header1 = ({superUser,User}) => {
 
           {superUser && (
             <li className="nav-item">
+
               <Link className="nav-link" to="/manage-accounts">
                 Manage accounts
+
+
+              
               </Link>
             </li>
             )}
+
 
 
           
