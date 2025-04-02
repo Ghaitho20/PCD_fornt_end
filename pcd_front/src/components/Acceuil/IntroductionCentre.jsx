@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll } from "framer-motion";
-import path from "../../img/introductionCentre.jpg" ;
+import path from "../../assets/introductionCentre.jpg" ;
 
 
 

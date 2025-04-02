@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import '../../assets/css/ai/rec.css';
 
+import ChatBot from '../ChatBot/ChatBot';
+import Footer from '../footer/footer';
+
+
 // Mock API function (to be replaced with real API call)
 const fetchRecommendations = async (service, surface) => {
   // Simulate API delay
@@ -84,8 +88,9 @@ const AIRecommendation = () => {
   };
 
   return (
+    <>
     <div className="ai-recommendation-container">
-      <h2 className="ai-recommendation-title">AI Disinfectant Recommendation</h2>
+      <h2 className="ai-recommendation-title mt-[25px]">AI Disinfectant Recommendation</h2>
       <div className="ai-recommendation-content">
         <form className="ai-recommendation-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -146,7 +151,11 @@ const AIRecommendation = () => {
           </div>
         )}
       </div>
+       <ChatBot/>
+       
     </div>
+    <Footer/>
+    </>
   );
 };
 
