@@ -12,6 +12,9 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
+    "daisyui": "^5.0.9",
+    "emoji-picker-react": "^4.12.2",
+    "firebase": "^11.5.0",
     "fortawesome": "^0.0.1-security",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.475.0",
@@ -25,9 +28,11 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.4.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
     "recharts": "^2.15.1",
     "swiper": "^11.2.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zustand": "^5.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

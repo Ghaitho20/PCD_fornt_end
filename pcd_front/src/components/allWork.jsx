@@ -10,7 +10,6 @@ import EditStatisticsPage from './Stats/editStatsPage/EditStatisticsPage';
 
 const ALL = () => {
   let superUser = true;
-
   let User =  true;
 
   return (
