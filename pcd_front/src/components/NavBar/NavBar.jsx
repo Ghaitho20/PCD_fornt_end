@@ -1,15 +1,11 @@
 import { FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
-import logo from "../../img/logoCentre.png";
+import logo from "../../assets/logoCentre.png";
+import Calendar from "../Calendar/Calendarmeet";
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
 
 
-
 const NavBar = () => {
-
-
-  
-  
 
   const [isOpen,setIsOpen] = useState(false);
 
@@ -50,7 +46,8 @@ const NavBar = () => {
                 <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Accueil</a>
                 <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Brochure</a>
                 <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Statistique</a>
-                <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Contactez-nous</a>  
+                <a  href="#" className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Contactez-nous</a>
+                <a  href ="Calendar" element={<Calendar />} className=" text-lg font-bold cursor-pointer text-gray-700 hover:text-[#333D79]  hover:rounded-full hover:scale-110 transition-all duration-250">Calendar</a>  
 
             </div>
           </div>

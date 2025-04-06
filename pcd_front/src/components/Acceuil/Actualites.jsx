@@ -5,44 +5,42 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import meetImage from '../../assets/images/Acceuil/meet.webp';
+import meetingNoticeImage from '../../assets/images/Acceuil/meeting-notice.jpg';
 
-
-
-// Tableau des actualités
 const news = [
     {
         title: "Assemblée Générale Elective du Conseil Régional des Pharmaciens",
         date: "8 juillet 2024",
         location: "Monastir, le 29 juin 2024, Hôtel Kuriat Palace Monastir",
-        image: "/news1.jpg",
+        image: meetImage, // Updated to use imported image
     },
     {
         title: "Assemblée Générale Elective du CROPS Gabès",
         date: "8 juillet 2024",
         location: "Gabès, le 26 juin 2024, Hôtel CHEMS à Gabès",
-        image: "/news2.jpg",
+        image: meetingNoticeImage, // Updated to use imported image
     },
     {
         title: "Assemblée Générale Elective du Conseil Régional des Pharmaciens",
         date: "19 juin 2024",
         location: "Béja, le 14 juin 2024",
-        image: "/news3.jpg",
+        image: meetImage, // Updated to use imported image
     },
     {
         title: "Assemblée Générale Elective du Conseil Régional des Pharmaciens",
         date: "19 juin 2024",
         location: "Béja, le 14 juin 2024",
-        image: "/news3.jpg",
+        image: meetingNoticeImage, // Updated to use imported image
     },
     {
         title: "Assemblée Générale Elective du Conseil Régional des Pharmaciens",
         date: "19 juin 2024",
         location: "Béja, le 14 juin 2024",
-        image: "/news3.jpg",
+        image: meetImage, // Updated to use imported image
     },
 ];
 
-// Composant pour afficher une actualité avec animation Framer Motion
 const NewsItem = ({ title, date, location, image }) => (
     <motion.div
         className="bg-white rounded-lg shadow-lg p-4"
@@ -60,68 +58,49 @@ const NewsItem = ({ title, date, location, image }) => (
 const ActualiteComp = () => {
     return (
         <section className="max-w-screen-xl mx-auto px-6 py-6 pb-24">
-            {/* Titre */}
-            
-
-             <div className="flex flex-col items-center space-x-2 pb-4">
-             <span className="text-blue-600 font-semibold select-none text-[28px]">
-                Notre Actualité
+            <div className="flex flex-col items-center space-x-2 pb-4">
+                <span className="text-blue-600 font-semibold select-none text-[28px]">
+                    Notre Actualité
                 </span>
                 <div className="bg-blue-600 flex items-center justify-center w-16 h-1 mt-2 rounded-full"></div>
             </div>
-  
-     
-            {/* Carousel des actualités */}
             <Swiper
-                className="mySwiper py-12"  // Classe CSS pour personnaliser le style du swiper
-                modules={[Autoplay, Pagination, Navigation]}  // Modules activés : Autoplay (défilement automatique), Pagination (pagination cliquable), Navigation (navigation avec boutons)
-                autoplay={{ delay: 5000, disableOnInteraction: false }}  // Autoplay avec délai de 5 secondes et activation même en cas d'interaction
-                pagination={{ clickable: true }}  // Pagination activée et rendue cliquable
-                navigation={true}  // Navigation activée (flèches de navigation)
-                grabCursor={true}  // Affichage du curseur de la souris comme une main lors du survol des slides
-                slidesPerView={3}  // Affiche 3 slides par vue par défaut
-                speed={400}  // Vitesse de transition des slides (en millisecondes)
-                spaceBetween={20}  // Espacement de 20px entre les slides
+                className="mySwiper py-12"
+                modules={[Autoplay, Pagination, Navigation]}
+                autoplay={{ delay: 5000, disableOnInteraction: false }}
+                pagination={{ clickable: true }}
+                navigation={true}
+                grabCursor={true}
+                slidesPerView={3}
+                speed={400}
+                spaceBetween={20}
                 breakpoints={{
-                    500: { slidesPerView: 1 },  // À partir de 500px, afficher 1 slide
-                    700: { slidesPerView: 2 },  // À partir de 700px, afficher 2 slides
-                    1024: { slidesPerView: 3 }  // À partir de 1024px, afficher 3 slides
-                }} // Pour chaque élément de 'news', afficher un SwiperSlide avec un NewsItem 
+                    500: { slidesPerView: 1 },
+                    700: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 }
+                }}
             >
                 {news.map((item, index) => (
-                    <SwiperSlide key={index}> 
-                        <NewsItem {...item} /> 
+                    <SwiperSlide key={index}>
+                        <NewsItem {...item} />
                     </SwiperSlide>
                 ))}
             </Swiper>
-            <div className="flex justify-center "> 
-            <button className="rounded-full bg-blue-600 p-3 text-white flex flex-col justify-center items-center ">Voir plus</button>
+            <div className="flex justify-center">
+                <button className="rounded-full bg-blue-600 p-3 text-white flex flex-col justify-center items-center">Voir plus</button>
             </div>
-           <Swiper
-                 // Classe CSS pour personnaliser le style du swiper
-                  // Modules activés : Autoplay (défilement automatique), Pagination (pagination cliquable), Navigation (navigation avec boutons)
-                 // Autoplay avec délai de 5 secondes et activation même en cas d'interaction
-                 // Pagination activée et rendue cliquable
-                 // Navigation activée (flèches de navigation)
-                      // Affichage du curseur de la souris comme une main lors du survol des slides
-                // Affiche 3 slides par vue par défaut
-               // Vitesse de transition des slides (en millisecondes)
-                 // Espacement de 20px entre les slides
-                breakpoints={{
-                    500: { slidesPerView: 1 },  // À partir de 500px, afficher 1 slide
-                    700: { slidesPerView: 2 },  // À partir de 700px, afficher 2 slides
-                    1024: { slidesPerView: 3 }  // À partir de 1024px, afficher 3 slides
-                }} // Pour chaque élément de 'news', afficher un SwiperSlide avec un NewsItem 
-            >
-                {news.map((item,index)=>(
-                    <SwiperSlide>item</SwiperSlide>
-
-                ))}
-
-            </Swiper>
             
+            {/* Custom Styles for Swiper Arrows */}
+            <style jsx>{`
+                :global(.swiper-button-next),
+                :global(.swiper-button-prev) {
+                    color: black !important; /* Change arrow color to black */
+                }
+            `}</style>
         </section>
     );
-}
+};
+
+    
 
 export default ActualiteComp;
