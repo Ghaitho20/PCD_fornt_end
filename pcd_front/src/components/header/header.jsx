@@ -126,6 +126,16 @@ const Header1 = ({superUser,User}) => {
                   Statistics
                 </Link>
               </li>
+              <li>
+                <Link className="dropdown-item" to="/edit/diseases-overview">
+                  Diseases Overview
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/edit/germs-overview">
+                  Germs Overview
+                </Link>
+              </li>
             </ul>
           </li>) }
 

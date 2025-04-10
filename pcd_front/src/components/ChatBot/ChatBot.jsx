@@ -47,7 +47,7 @@ const ChatBot = ()=>{
         try{
             //make the api call to get the bot's response 
             const response = await fetch (process.env.REACT_APP_API_URL, requestOptions);
-            const data = await response.json();
+            const data = await response.json(); 
             if (!response.ok)throw new Error (data.error.message || "Something went wrong");
             //console.log(data)
             const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g,"$1").trim();

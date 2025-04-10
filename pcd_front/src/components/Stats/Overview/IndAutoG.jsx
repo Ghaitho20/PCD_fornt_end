@@ -1,4 +1,4 @@
-import styles from '../assets/css/IndAutoG.module.css'
+import styles from '../../../assets/css/Stats/Overview/IndAutoG.module.css'
 export const IndAutoG = () => {
     return(
         <div className={styles.bigContainer}>
@@ -32,9 +32,6 @@ export const IndAutoG = () => {
                         </ul>
                     </div>
                 </div>
-
-                
-
             </div>
         </div>
       

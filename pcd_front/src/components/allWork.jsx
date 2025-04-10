@@ -15,6 +15,8 @@ import Acceuil from './Acceuil/Acceuil';
 import EditStatisticsPage from './Stats/editStatsPage/EditStatisticsPage';
 import UserManagement from './edit/userManagement';
 import EditNewsPage from './edit/editNews';
+import DiseaseEditor from './Stats/editStatsPage/DiseaseEditor';
+import GermEditor from './Stats/editStatsPage/HygieneEditor';
 
 const ALL = () => {
   let superUser = true;
@@ -23,7 +25,7 @@ const ALL = () => {
 
   return (
     <Router>
-      <Header superUser={true} User={true} />
+      <Header superUser={false} User={false} />
       <Routes>
         {/* Set Acceuil as the default route at "/" */}
         <Route path="/" element={<Acceuil />} />
@@ -32,10 +34,14 @@ const ALL = () => {
         <Route path="/ai-recommendation" element={<AIRecommendation />} />
         <Route path="/edit/stats" element={<EditStatisticsPage />} />
         <Route path="/edit/news" element={<EditNewsPage />} />
+        
+        <Route path="/edit/diseases-overview" element={<DiseaseEditor />} />
+        <Route path="/edit/germs-overview" element={<GermEditor/>} />
+
         <Route path="/statistics/overview" element={<StatsPage />} />
         <Route path="/statistics/diseases" element={<DiseaseOverview />} />
         <Route path="/statistics/hygiene" element={<Hygiene />} />
-
+        
 
         {/* Optionally keep /Homepage as an alias for Acceuil */}
         <Route path="/Homepage" element={<Acceuil />} />

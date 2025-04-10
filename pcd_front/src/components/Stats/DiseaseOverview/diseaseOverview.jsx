@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from 'react'; // Added useEffect import
+import axios from 'axios'; // Added axios import
 import "../../../assets/css/Stats/DiseaseOverview/diseaseOverview.css";
 import lymphoma from '../../../assets/images/Stats/DiseaseOverview/lymphoma.jpg';
 import leukemia from '../../../assets/images/Stats/DiseaseOverview/leukemia.jpg';
@@ -9,32 +10,17 @@ import ChatBot from "../../ChatBot/ChatBot";
 
 
 const DiseaseOverview = () => {
-  const diseases = [
-    {
-      name: "Lymphoma",
-      image: lymphoma,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-    {
-      name: "Acute Leukemia",
-      image: leukemia,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-    {
-      name: "Bone Marrow Aplasia",
-      image: anemia,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-    {
-      name: "Multiple Myeloma",
-      image: myeloma,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-  ];
+
+  const [diseases, setDiseases] = useState([]);
+    
+  // Fetch diseases on component mount
+  useEffect(() => {
+    axios.get("http://localhost:8080/diseases")
+      .then(response => setDiseases(response.data))
+      .catch(error => console.error("Error fetching diseases:", error));
+
+  }, []);
+
 
   return (
     <div className="disease-overview-container ">
@@ -51,9 +37,9 @@ const DiseaseOverview = () => {
         >
           <div className="disease-content">
             <img
-              src={disease.image}
-              alt={`${disease.name} illustration`}
-              className="disease-image"
+            src={`data:image/png;base64,${disease.image}`}
+            alt={`${disease.name} illustration`}
+            className="disease-image"
             />
             <div className="disease-info">
               <h2 className="disease-name">{disease.name}</h2>

@@ -7,29 +7,45 @@ const TransplantActivityInput = ({ onSubmit }) => {
   const [year, setYear] = useState('');
   const [autografts, setAutografts] = useState('');
   const [allografts, setAllografts] = useState('');
-
+  
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    try{
+      e.preventDefault();
 
-    // Parse inputs to integers, defaulting to 0 if empty
-    const parsedYear = Math.floor(parseFloat(year) || 0);
-    const parsedAutografts = Math.floor(parseFloat(autografts) || 0);
-    const parsedAllografts = Math.floor(parseFloat(allografts) || 0);
+      // Parse inputs to integers, defaulting to 0 if empty
+      const parsedYear = Math.floor(parseFloat(year) || 0);
+      const parsedAutografts = Math.floor(parseFloat(autografts) || 0);
+      const parsedAllografts = Math.floor(parseFloat(allografts) || 0);
 
-    // Validate inputs
-    if (isNaN(parsedYear) || isNaN(parsedAutografts) || isNaN(parsedAllografts)) {
-      alert('Please enter valid numbers for all fields.');
-      return;
-    }
+      // Validate inputs
+      if (isNaN(parsedYear) || isNaN(parsedAutografts) || isNaN(parsedAllografts)) {
+        alert('Please enter valid numbers for all fields.');
+        return;
+      }
+      
+      const response = await fetch("http://localhost:8080/TransAct",
+        {
+          method: 'PUT',
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(
+            {
+              "year": year,
+              "nbAllographs": allografts,
+              "nbAutographs": autografts
+            }
+          )
+        }
+      )
 
-    // Pass data to parent component
-    onSubmit({ year: parsedYear, autografts: parsedAutografts, allografts: parsedAllografts });
-
-    // Reset form fields
-    setYear('');
-    setAutografts('');
-    setAllografts('');
+      if (!response.ok){throw new Error(response.statusText);}
+      alert("Submission is done successfully !");
+      setYear('');
+      setAutografts('');
+      setAllografts(''); 
+  }catch(err){
+    console.log(err.message);  
+  }
   };
 
   return (

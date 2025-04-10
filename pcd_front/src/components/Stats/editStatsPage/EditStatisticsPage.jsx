@@ -8,6 +8,7 @@ import TransplantDiseasesInput from './TransplantDiseasesInput';
 import '../../../assets/css/Stats/editStatsPage/EditStatisticsPage.css';
 import Footer from '../../footer/footer';
 import ChatBot from '../../ChatBot/ChatBot';
+import EditParagraphActPha from './EditParagraphActPha';
 
 const EditStatisticsPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -32,6 +33,9 @@ const EditStatisticsPage = () => {
         return <TransplantActivityInput />;
       case 'transplantDiseases':
         return <TransplantDiseasesInput />;
+      case 'EditStatisticsPage':
+        return <EditParagraphActPha/>
+      
       default:
         return <p>Please select a statistic to edit.</p>;
     }
@@ -51,6 +55,7 @@ const EditStatisticsPage = () => {
           <option value="staffPatientStats">Staff and Patients Stats</option>
           <option value="transplantActivity">Transplant Activity Throughout the Years</option>
           <option value="transplantDiseases">Diseases Covered by Transplantation</option>
+          <option value="EditStatisticsPage">Pharmacy Activity Paragraph</option>
         </select>
       </div>
       <div className="component-container">

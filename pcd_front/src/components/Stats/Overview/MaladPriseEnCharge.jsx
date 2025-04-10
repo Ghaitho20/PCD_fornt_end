@@ -1,104 +1,115 @@
-import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import styles from '../assets/css/MaladPriseEnCharge.module.css'; // Correct import
-// Sample Data (replace with your own data)
-const data1 = [
-  { name: 'LH', percent: 13.5 },
-  { name: 'LNH', percent: 16 },
-  { name: 'MM', percent: 70 },
-  { name: 'LA', percent: 0.5 },
-];
+import React, { useEffect, useState } from 'react';
+import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import styles from '../../../assets/css/Stats/Overview/MaladPriseEnCharge.module.css';
 
-const data2 = [
-  { name: 'LA', percent: 47 },
-  { name: 'AMA', percent: 30 },
-  { name: 'MM', percent: 5 },
-  { name: 'LMC', percent: 4 },
-  { name: 'Lymphome', percent: 3 },
-  { name: 'Hémoglobinopathie', percent: 2 },
-  { name: 'SMD', percent: 2 },
-  { name: 'Gaucher', percent: 1 },
-  { name: 'Fanconi', percent: 6 },
-];
-
-// Colors for each slice
-const COLORS1 = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-const COLORS2 = [
-  '#4C8BF5',  // Light Blue
-  '#66BB6A',  // Green
-  '#FFCA28',  // Amber Yellow
-  '#FF7043',  // Coral
-  '#42A5F5',  // Sky Blue
-  '#9CCC65',  // Lime Green
-  '#FFEB3B',  // Yellow
-  '#FF7043',  // Deep Coral
-  '#26C6DA',  // Turquoise
-];
-
-const Legends = [
-  { acronym: "LH", name: "Lymphome de Hodgkin" },
-  { acronym: "LNH", name: "Lymphome non Hodgkinien" },
-  { acronym: "MM", name: "Myoélome multiple" },
-  { acronym: "LA", name: "Leucémie aigue" },
-  { acronym: "LMC", name: "Leucémie myéloide chronique" },
-  { acronym: "AMA", name: "Aplasie médullaire acquise" },
-  { acronym: "SMD", name: "Syndrome myélodysplasique " },
-];
-
-const PieChart = ({ data, COLORS }) => {
-  // Helper function to render the label with percentage
-  const renderLabel = ({ name, percent }) => ` ${name} ${percent}%`;
+const PieChart = ({ data, colors }) => {
+  // Update renderLabel to use acronym and percent
+  const renderLabel = ({ acronym, percentage }) => `${acronym} (${percentage}%)`;
 
   return (
-    <RechartsPieChart width={500} height={400}>
-      <Pie
-        data={data}                 // Data source
-        dataKey="percent"           // Data field to use
-        nameKey="name"              // Label to display in legend
-        cx="50%"                    // X-center position
-        cy="50%"                    // Y-center position
-        outerRadius={120}           // Size of the Pie
-        label={renderLabel}         // Custom label with percentages
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-
-      <Legend verticalAlign="bottom" height={36} /> {/* Legend with names */}
-    </RechartsPieChart>
+    <ResponsiveContainer width="100%" height={350}>
+      <RechartsPieChart>
+        <Pie
+          data={data}
+          dataKey="percentage"
+          nameKey="acronym" // Use acronym for the pie slice labels
+          cx="50%"
+          cy="50%"
+          outerRadius={120}
+          label={renderLabel}
+          labelLine={{ stroke: '#666', strokeWidth: 1 }}
+          animationDuration={800}
+          animationBegin={200}
+        >
+          {data.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={colors[index % colors.length]}
+              stroke="#fff"
+              strokeWidth={2}
+            />
+          ))}
+        </Pie>
+        <Tooltip
+          formatter={(value, name) => [`${value}%`, name]}
+          contentStyle={{
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            borderRadius: '8px',
+            border: '1px solid #ddd',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          }}
+        />
+        <Legend
+          verticalAlign="bottom"
+          height={36}
+          iconType="circle"
+          formatter={(value) => (
+            <span style={{ color: '#333', fontSize: '14px', fontWeight: '500' }}>
+              {value}
+            </span>
+          )}
+        />
+      </RechartsPieChart>
+    </ResponsiveContainer>
   );
 };
 
 export const MaladiePriseEnCharge = () => {
+  const [data1, setData1] = useState([]);
+  const [data2, setData2] = useState([]);
+
+  // Fetch the data from API
+  useEffect(() => {
+    const getData1 = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/MaladiePriseEnCharge', { method: 'GET' });
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const data = await response.json();
+        console.log('Retrieved Data from API', data);
+        setData1(data); // Corrected to setData1
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    getData1();
+  }, []);
+
+  // Generate a random color
+  const generateRandomColor = () => {
+    const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    return randomColor;
+  };
+
+  // Generate colors based on the data length
+  const COLORS1 = data1.length ? Array.from({ length: data1.length }, () => generateRandomColor()) : [];
+  const COLORS2 = data1.length ? Array.from({ length: data1.length }, () => generateRandomColor()) : [];
+
   return (
-    <div className={styles.container}> {/* Using the correct class from the CSS Module */}
-      <div className={styles.titleContainer}> {/* Corrected class name */}
-        Maladies prises en charge par la greffe
-      </div>
-      <div className={styles.subContainer}> {/* Correct class name */}
-        <div className={styles.leftPart}> {/* Correct class name */}
-          <div className={styles.legendContainer}> {/* Correct class name */}
-            {Legends.map(({ acronym, name }, index) => (
-              <div key={index}>
-                <span style={{ fontWeight: 'bold', fontSize: '16px' }}>
-                  {acronym}:{" "}
-                </span>
-                <span style={{ fontSize: '14px' }}>{name}</span>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Maladies prises en charge par la greffe</h2>
+      <div className={styles.chartContainer}>
+        <div className={styles.chartSection}>
+          <div className={styles.legendContainer}>
+            <h3 className={styles.subTitle}>Légende</h3>
+            {data1.map(({ acronym, disease }, index) => (
+              <div key={index} className={styles.legendItem}>
+                <span className={styles.acronym}>{acronym}:</span>
+                <span className={styles.fullName}>{disease}</span>
               </div>
             ))}
           </div>
-          <div className={styles.rightPart}>
-            <PieChart data={data1} COLORS={COLORS1} />
+          <div className={styles.chartWrapper}>
+            <PieChart data={data1} colors={COLORS1} />
           </div>
-          
         </div>
-
-        <div className={styles.rightPart}> {/* Correct class name */}
-          <PieChart data={data2} COLORS={COLORS2} />
+        <div className={styles.chartSection}>
+          <div className={styles.chartWrapper}>
+            <PieChart data={data1} colors={COLORS2} />
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-

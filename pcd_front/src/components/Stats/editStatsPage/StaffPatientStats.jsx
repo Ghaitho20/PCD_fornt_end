@@ -1,31 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaUserMd, FaUserNurse, FaUsers } from 'react-icons/fa';
 import '../../../assets/css/Stats/editStatsPage/StaffPatientStats.css';
 
 const StaffPatientStats = ({ onSubmit }) => {
   // State variables to hold input values
-  const [doctors, setDoctors] = useState('');
-  const [nurses, setNurses] = useState('');
-  const [patients, setPatients] = useState('');
+  const [doctors, setDoctors] = useState(0);
+  const [nurses, setNurses] = useState(0);
+  const [patients, setPatients] = useState(0);
+  const [data, setData] = useState([]);
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  useEffect(()=>{
+    const getStats = async() => {
+      try
+      {
+        const response = await fetch("http://localhost:8080/StaffPatientStats")
+        if (!response.ok) {console.log(response.statusText); return;}
+        const data = await response.json();
+        setData(data);
+        setDoctors(data[0].doctors);
+        setNurses(data[0].nurses);
+        setPatients(data[0].patients);
+      }catch(err){console.log(err.message);}}
+    getStats();
+
+    }, []
+    
+    
+  )
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Convert inputs to integers, defaulting to 0 if empty
+    console.log("Submit clicked ✅");
+  
     const doctorsNum = Math.floor(parseFloat(doctors) || 0);
     const nursesNum = Math.floor(parseFloat(nurses) || 0);
     const patientsNum = Math.floor(parseFloat(patients) || 0);
-
-    // Basic validation for non-numeric inputs
+  
+    console.log("Submitting values:", { doctorsNum, nursesNum, patientsNum });
+  
     if (isNaN(doctorsNum) || isNaN(nursesNum) || isNaN(patientsNum)) {
-      alert('Please enter valid numbers for all fields.');
+      alert("Please enter valid numbers for all fields.");
       return;
     }
-
-    // Pass the values to the parent component
-    onSubmit(doctorsNum, nursesNum, patientsNum);
+  
+    try {
+      const response = await fetch("http://localhost:8080/StaffPatientStats", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          doctors: doctorsNum,
+          nurses: nursesNum,
+          patients: patientsNum,
+        }),
+      });
+  
+      if (!response.ok) {
+        console.error("Update failed ❌", response.statusText);
+      } else {
+        console.log("Update succeeded ✅");
+        alert("Statistics updated successfully!");
+      }
+    } catch (err) {
+      console.error("Request error ❌", err.message);
+    }
   };
+  
 
   return (
     <div className="staff-patient-input">

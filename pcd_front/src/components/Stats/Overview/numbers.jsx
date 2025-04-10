@@ -1,93 +1,84 @@
 import doctor from '../../../assets/images/Stats/Overview/doctor.png';
 import nurse from '../../../assets/images/Stats/Overview/nurse.png';
 import patient from '../../../assets/images/Stats/Overview/patient.png';
-import styles from '../../../assets/css/Stats/Overview/numbers.module.css'; // Import CSS Module
-import { useState, useEffect } from 'react'; // Import useState and useEffect
+import styles from '../../../assets/css/Stats/Overview/numbers.module.css';
+import { useState, useEffect } from 'react';
 
 export const Numbers = () => {
-    // Declare state inside the component
-    const [DoctorCount, setDoctorCount] = useState(0);
-    const [NurseCount, setNurseCount] = useState(0);
-    const [PatientCount, setPatientCount] = useState(0);
-    let DoctorNumber = 49;
-    let NurseNumber = 89;
-    let PatientNumber = 245;
+    const [doctorCount, setDoctorCount] = useState(0);
+    const [nurseCount, setNurseCount] = useState(0);
+    const [patientCount, setPatientCount] = useState(0);
+    const [doctorTarget, setDoctorTarget] = useState(0);
+    const [nurseTarget, setNurseTarget] = useState(0);
+    const [patientTarget, setPatientTarget] = useState(0);
 
-    // Set up the effect inside the component
+    // Fetch data from backend
     useEffect(() => {
-        const updateHandler = (number) => {
-            const intervalId = setInterval(() => {
-                setDoctorCount((prevCount) => {
-                    if (prevCount >= number) {
-                        clearInterval(intervalId); // Stop when we reach the target
-                        return prevCount; // Keep the final value
-                    }
-                    return prevCount + 1; // Increment the count
-                });
-            }, 100);
+        const getStats = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/StaffPatientStats");
+                if (!response.ok) {
+                    console.log("Error fetching stats:", response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setDoctorTarget(data[0].doctors || 0);
+                setNurseTarget(data[0].nurses || 0);
+                setPatientTarget(data[0].patients || 0);
+            } catch (err) {
+                console.log("Fetch error:", err.message);
+            }
         };
+        getStats();
+    }, []); // Runs once on mount
 
-        updateHandler(DoctorNumber); // Start the counter
-    }, []); // Empty dependency array to run once on mount
+    // Reusable counter animation function
+    const animateCounter = (currentCount, targetCount, setCount, intervalTime) => {
+        if (currentCount >= targetCount) return; // No need to animate if already at or above target
+        const intervalId = setInterval(() => {
+            setCount((prevCount) => {
+                if (prevCount >= targetCount) {
+                    clearInterval(intervalId);
+                    return targetCount; // Lock to target value
+                }
+                return prevCount + 1;
+            });
+        }, intervalTime);
+        // Cleanup interval on unmount or target change
+        return () => clearInterval(intervalId);
+    };
 
-    useEffect(() => {
-        const updateHandler = (number) => {
-            const intervalId = setInterval(() => {
-                setNurseCount((prevCount) => {
-                    if (prevCount >= number) {
-                        clearInterval(intervalId); // Stop when we reach the target
-                        return prevCount; // Keep the final value
-                    }
-                    return prevCount + 1; // Increment the count
-                });
-            }, 89);
-        };
-
-        updateHandler(NurseNumber); // Start the counter
-    }, []); // Empty dependency array to run once on mount
-
-    useEffect(() => {
-        const updateHandler = (number) => {
-            const intervalId = setInterval(() => {
-                setPatientCount((prevCount) => {
-                    if (prevCount >= number) {
-                        clearInterval(intervalId); // Stop when we reach the target
-                        return prevCount; // Keep the final value
-                    }
-                    return prevCount + 1; // Increment the count
-                });
-            }, 45);
-        };
-
-        updateHandler(PatientNumber); // Start the counter
-    }, []); // Empty dependency array to run once on mount
+    // Animate counters when target values change
+    useEffect(() => animateCounter(doctorCount, doctorTarget, setDoctorCount, 89), [doctorTarget]);
+    useEffect(() => animateCounter(nurseCount, nurseTarget, setNurseCount, 89), [nurseTarget]);
+    useEffect(() => animateCounter(patientCount, patientTarget, setPatientCount, 45), [patientTarget]);
 
     return (
-        <div className={styles.container}> {/* Use styles.container */}
-            <div className={styles.innerContainer}> {/* Use styles.innerContainer */}
-                <img src={doctor} alt="doctor logo" className={styles.logo} /> {/* Use styles.logo */}
-                <div className={styles.number}>{DoctorCount}</div> {/* Use styles.number */}
-                <div className={styles.desc}> {/* Use styles.desc */}
-                    <span className={styles.occ}>Docteurs</span> {/* Use styles.occ */}
-                    <span className={styles.annee}>Année 2024-2025</span> {/* Use styles.annee */}
+        <div className={styles.container}>
+            <div className={styles.innerContainer}>
+                <img src={doctor} alt="doctor logo" className={styles.logo} />
+                <div className={styles.number}>{doctorCount}</div>
+                <div className={styles.desc}>
+                    <span className={styles.occ}>Docteurs</span>
+                    <span className={styles.annee}>Année 2024-2025</span>
                 </div>
             </div>
 
-            <div className={styles.innerContainer}> {/* Use styles.innerContainer */}
-                <img src={nurse} alt="nurse logo" className={styles.logo} /> {/* Use styles.logo */}
-                <div className={styles.number}>{NurseCount}</div> {/* Use styles.number */}
-                <div className={styles.desc}> {/* Use styles.desc */}
-                    <span className={styles.occ}>Infirmières</span> {/* Use styles.occ */}
-                    <span className={styles.annee}>Année 2024-2025</span> {/* Use styles.annee */}
+            <div className={styles.innerContainer}>
+                <img src={nurse} alt="nurse logo" className={styles.logo} />
+                <div className={styles.number}>{nurseCount}</div>
+                <div className={styles.desc}>
+                    <span className={styles.occ}>Infirmières</span>
+                    <span className={styles.annee}>Année 2024-2025</span>
                 </div>
             </div>
 
-            <div className={styles.innerContainer}> {/* Use styles.innerContainer */}
-                <img src={patient} alt="patient logo" className={styles.logo} /> {/* Use styles.logo */}
-                <div className={styles.number}>{PatientCount}</div> {/* Use styles.number */}
-                <div className={styles.desc}> {/* Use styles.desc */}
-                    <span className={styles.occ}>Patients</span> {/* Use styles.occ */}
-                    <span className={styles.annee}>Année 2024-2025</span> {/* Use styles.annee */}
+            <div className={styles.innerContainer}>
+                <img src={patient} alt="patient logo" className={styles.logo} />
+                <div className={styles.number}>{patientCount}</div>
+                <div className={styles.desc}>
+                    <span className={styles.occ}>Patients</span>
+                    <span className={styles.annee}>Année 2024-2025</span>
                 </div>
             </div>
         </div>

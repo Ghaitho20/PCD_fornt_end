@@ -1,41 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from 'react'; // Added useEffect import
+import axios from 'axios'; // Added axios import
 import "../../../assets/css/Stats/DiseaseOverview/diseaseOverview.css";
-import airGerm from '../../../assets/images/Stats/Hygiene/airGerm.jpg';
-import floorGerm from '../../../assets/images/Stats/Hygiene/floorGerm.jpg';
-import sinkGerm from '../../../assets/images/Stats/Hygiene/sinkGerm.jpg';
-import Germ from '../../../assets/images/Stats/Hygiene/Germ.jpg';
 import SelectionBar from "./selectionBar";
 import Footer from '../../footer/footer';
 import ChatBot from "../../ChatBot/ChatBot";
 
 
 const Hygiene = () => {
-  const diseases = [
-    {
-      name: "Germ",
-      image: Germ,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-    {
-      name: "Floor Germ",
-      image: floorGerm,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-    {
-      name: "Air Germ",
-      image: airGerm,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-    {
-      name: "Sink Germ",
-      image: sinkGerm,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    },
-  ];
+
+
+    const [Germs, setGerms] = useState([]);
+      
+    // Fetch germs on component mount
+    useEffect(() => {
+      axios.get("http://localhost:8080/germs")
+        .then(response => setGerms(response.data))
+        .catch(error => console.error("Error fetching germs:", error));
+  
+    }, []);
+  
 
   return (
     <div className="disease-overview-container ">
@@ -47,7 +30,7 @@ const Hygiene = () => {
       <p className="section-subtitle">
         Explore the different germs encountered at the Marrow Transplant Center.
       </p>
-      {diseases.map((disease, index) => (
+      {Germs.map((germ, index) => (
         <div
           key={index}
           className={`disease-section ${index % 2 === 0 ? 'left' : 'right'}`}
@@ -55,13 +38,13 @@ const Hygiene = () => {
         >
           <div className="disease-content">
             <img
-              src={disease.image}
-              alt={`${disease.name} illustration`}
-              className="disease-image"
+            src={`data:image/png;base64,${germ.image}`}
+            alt={`${germ.name} illustration`}
+            className="disease-image"
             />
             <div className="disease-info">
-              <h2 className="disease-name">{disease.name}</h2>
-              <p className="disease-description">{disease.description}</p>
+              <h2 className="disease-name">{germ.name}</h2>
+              <p className="disease-description">{germ.description}</p>
             </div>
           </div>
         </div>

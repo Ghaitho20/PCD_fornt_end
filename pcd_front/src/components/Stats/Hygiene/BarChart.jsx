@@ -11,50 +11,19 @@ import {
 } from 'recharts';
 import '../../../assets/css/Stats/Hygiene/barChart.css'; // Import custom styles
 
-export const BarChart = ({ data, year, service, surface, disinfectant, germ }) => {
-  // Function to generate the chart title
-  const getChartTitle = () => {
-    if (disinfectant) {
-      if (disinfectant !== "Tous") {
-        return service
-          ? `Disinfectant ${disinfectant} Chart Per Surface - Year ${year}`
-          : `Disinfectant ${disinfectant} Chart Per Service - Year ${year}`;
-      }
-      return service
-        ? surface
-          ? `Disinfectants Chart in ${service}  ${surface} - Year ${year}`
-          : `Disinfectants Chart in ${service}  - Year ${year}`
-        : `Disinfectants Chart - Year ${year}`;
-    }
-    if (germ) {
-      if (germ !== "Tous") {
-        return service
-          ? `Germ ${germ} Chart Per Surface - Year ${year}`
-          : `Germ ${germ} Chart Per Service - Year ${year}`;
-      }
-      return service
-        ? surface
-          ? `Germs Chart in ${service}  ${surface} - Year ${year}`
-          : `Germs Chart in ${service}  - Year ${year}`
-        : `Germs Chart - Year ${year}`;
-    }
-    return `Chart - Year ${year}`; // Fallback title
-  };
-
-  // Function to determine XAxis label
+export const BarChart = ({ data, year, service, surface, disinfectant}) => {
+  
   const getXAxisLabel = () => {
-    if (disinfectant) {
-      return disinfectant === "Tous" ? "Disinfectants" : service ? "Surfaces" : "Services";
+    if (year === "Year") {return "years";}
+    else {
+      if (service ==="Service") {return "Surfaces";}
+      else {return "Services";}
     }
-    if (germ) {
-      return germ === "Tous" ? "Germs" : service ? "Surfaces" : "Services";
-    }
-    return "Categories"; // Fallback
   };
 
   return (
     <div className="chart-wrapper">
-      <h3 className="chart-title">{getChartTitle()}</h3>
+      <h3 className="chart-title">Stats</h3>
       <div className="chart-container">
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={data}>
