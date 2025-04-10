@@ -20,7 +20,6 @@ import GermEditor from './Stats/editStatsPage/HygieneEditor';
 
 const ALL = () => {
   let superUser = true;
-
   let User =  true;
 
   return (

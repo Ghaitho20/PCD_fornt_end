@@ -1,6 +1,7 @@
 
 import React from 'react';
 import ALL from './components/allWork';
+
 import ContactSection from './components/Acceuil/horraire';
 import Faqs from './components/pages/faqs';
 import Faqs1 from './components/pages/faqs1';
@@ -30,12 +31,16 @@ import ActivitePharmacie from './components/Stats/Overview/activitePharmacie';
 import EditActivitePharmacie from './components/Stats/editStatsPage/EditActivitePharmacie';
 import ChatBot from './components/ChatBot/ChatBot';
 
-
-
-
 function App() {
   return (
+
+    /*<Forum/>*/
+
+
     <ALL/>
+    
+
+
   );
 }
 
