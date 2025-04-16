@@ -18,7 +18,7 @@ body{
 
 }*/
 
-.container{
+.Chatbotcontainer{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -26,14 +26,14 @@ body{
     width: 100%;
 
     /*background: linear-gradient(#F4F0FF,#DACDFF);*/
-    
+    background-color: transparent;
     height: 100vh;
     position: fixed;
     z-index: 55;
 
     
 }
-.container.show-chatbot{
+.Chatbotcontainer.show-chatbot{
     position: fixed;
     z-index: 55;
 }
@@ -58,14 +58,14 @@ body{
 }
 
 #chatbot-toggler span:last-child,
-.container.show-chatbot #chatbot-toggler span:first-child{
+.Chatbotcontainer.show-chatbot #chatbot-toggler span:first-child{
     opacity: 0;
 }
-.container.show-chatbot #chatbot-toggler span:last-child{
+.Chatbotcontainer.show-chatbot #chatbot-toggler span:last-child{
     opacity: 1;
 }
 
-.container.show-chatbot #chatbot-toggler {
+.Chatbotcontainer.show-chatbot #chatbot-toggler {
     transform: rotate(90deg);
 
 }
@@ -85,7 +85,7 @@ body{
     transform-origin: bottom right;
     transition: all 0.1s ease ;
 }
-.container.show-chatbot .chatbot-popup{
+.Chatbotcontainer.show-chatbot .chatbot-popup{
     opacity: 1;
     pointer-events: auto ;
     transform: scale(1);

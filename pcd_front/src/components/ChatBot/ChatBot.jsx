@@ -78,7 +78,7 @@ const ChatBot = ()=>{
 
 
     return (
-        <div className= {`container ${ showChatBot ?"show-chatbot":"" }`}>
+        <div className= {`Chatbotcontainer ${ showChatBot ?"show-chatbot":"" }`}>
 
             <button id="chatbot-toggler" onClick={()=>setShowChatBot(prev =>!prev)}>
                 <span className="material-symbols-rounded">

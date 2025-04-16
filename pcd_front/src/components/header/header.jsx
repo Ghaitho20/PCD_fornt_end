@@ -296,10 +296,10 @@ const Header1 = ({superUser,User}) => {
                     <h2 className="text-xl font-bold mb-4">Connexion Espace Médecin</h2>
                     <form onSubmit={handleLogin}>
                       <label className="block mb-2">Email *</label>
-                      <input name="email" type="text" className="w-full p-2 border rounded mb-4" required/>
+                      <input name="email" type="text" className="w-full bg-white p-2 border rounded mb-4" required/>
           
                       <label className="block mb-2">Mot de passe *</label>
-                      <input  name="password" type="password" className="w-full p-2 border rounded mb-4"required />
+                      <input  name="password" type="password" className="w-full bg-white p-2 border rounded mb-4"required />
           
 
                       <Link className="text-blue-600 text-sm" onClick={handleForgetPassword}>
