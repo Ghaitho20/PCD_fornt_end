@@ -1,6 +1,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Lexend+Giga:wght@100..900&display=swap');
 
+.nav-link.dropdown-toggle {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: inherit; /* inherits text color from header */
+  padding: 0; /* optional: tighten spacing if needed */
+  cursor: pointer;
+}
+
 
 /* Header container */
 .header {
