@@ -7,6 +7,7 @@ import { FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin ,FaFacebookMes
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
 const TopBar = () => {
+  
   return(
       <div className="bg-gradient-to-r from-[#7bed9f] via-[#a1c6ea] to-[#7bed9f] text-white text-sm py-2 px-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
@@ -43,11 +44,29 @@ const Header1 = ({superUser,User}) => {
 
   console.log('superUser:', superUser, 'User:', User);
    const [isOpen,setIsOpen] = useState(false);
+   const [notifications, setNotifications] = useState([]);
+   const [showNotifications, setShowNotifications] = useState(false);
   
     const handleDialogConn = ()=>{
       setIsOpen(!isOpen);
       console.log(isOpen)
     }
+    const handleNotificationsClick = async () => {
+      setShowNotifications(!showNotifications);
+      if (!showNotifications) {
+        try {
+          const res = await fetch('http://localhost:8080/api/contact/');
+          const data = await res.json();
+    
+          // Tri décroissant + prendre les 10 premiers
+          const sorted = data.sort((a, b) => b.id - a.id).slice(0, 10);
+        setNotifications(sorted);
+        } catch (err) {
+          console.error('Erreur lors de la récupération des notifications:', err);
+        }
+      }
+    };
+    
 
   return (
     <header className="header bg-[#2c3e50] text-white py-4 ">
@@ -172,11 +191,30 @@ const Header1 = ({superUser,User}) => {
     {(superUser || User) &&(<button>
            <FaFacebookMessenger/>
         </button>)}
-        {(superUser || User) &&(<button>
-          <span class="material-symbols-outlined">
-              notifications
-          </span>
-        </button>)}
+        {(superUser || User) && (
+          <div className="relative">
+            <button onClick={handleNotificationsClick}>
+              <span className="material-symbols-outlined">notifications</span>
+            </button>
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-64 bg-white text-black shadow-lg rounded-lg max-h-80 overflow-y-auto z-50">
+                <div className="p-4 font-bold border-b border-gray-300">Notifications</div>
+                {notifications.length > 0 ? (
+                  notifications.map((notif, index) => (
+                    <div key={index} className="p-3 border-b border-gray-200">
+                      <div><strong>Nom:</strong> {notif.name}</div>
+                      <div><strong>Email:</strong> {notif.email}</div>
+                      <div><strong>Téléphone:</strong> {notif.phone}</div>
+                      <div><strong>Message:</strong> {notif.message}</div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-3 text-gray-500">Aucune notification</div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         {(superUser || User) &&<button className="logout-btn bg-transparent text-white ">
           <FaSignOutAlt className="logout-icon " /> 
         </button>}

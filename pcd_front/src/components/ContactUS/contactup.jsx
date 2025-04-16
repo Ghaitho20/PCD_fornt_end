@@ -27,26 +27,48 @@ const ContactForm = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert("Form submitted successfully!");
-      setFormData({ name: "", email: "", phone: "", message: "" });
-      setErrors({});
+      try {
+        const response = await fetch("http://localhost:8080/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+  
+        if (response.ok) {
+          alert("Message sent successfully!");
+          setFormData({ name: "", email: "", phone: "", message: "" });
+          setErrors({});
+        } else {
+          alert("Failed to send message. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("An error occurred. Please try again.");
+      }
     }
   };
+  
+
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen p-4">
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-4 pt-20 ">
       <img 
         src={image} 
         alt="Background" 
         className="absolute top-0 left-0 w-full h-full object-cover z-[-1]" 
       />
-      
-      <div className="bg-green bg-opacity-90 shadow-lg rounded-lg p-8 max-w-4xl w-full flex flex-col md:flex-row">
-        <div className="w-full md:w-2/3 pr-4">
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <div className="bg-green bg-opacity-90 shadow-lg rounded-lg p-8 max-w-4xl w-full flex flex-col md:flex-row pt-20">
+        <div className="w-full md:w-2/3 pr-4 pt-20">
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -87,7 +109,9 @@ const ContactForm = () => {
             ></textarea>
             {errors.message && <p className="text-red-500 text-sm">{errors.message}</p>}
             
-            <button type="submit" className="w-full bg-[#333D79] text-white p-3 rounded">Submit</button>
+            <button 
+             onClick={handleSubmit}
+            type="submit" className="w-full bg-[#333D79] text-white p-3 rounded">Submit</button>
           </form>
         </div>
         {/* Info Section */}
@@ -124,6 +148,7 @@ const ContactForm = () => {
         </div>
       </div>
     </div>
+   
   );
 };
 export default ContactForm;

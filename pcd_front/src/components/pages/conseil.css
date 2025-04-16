@@ -1,0 +1,122 @@
+/* Layout */
+.conseil-container {
+    width: 100%;
+    background-color: #f8fafc;
+    padding-bottom: 32px;
+  }
+  
+  .actions-bar {
+    position: sticky;
+    top: 64px; /* Hauteur du header */
+    z-index: 100;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    padding: 12px 0;
+  }
+  
+  .actions-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+  
+  .conseil-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px 0;
+  }
+  
+  /* Cards Grid */
+  .advice-grid {
+    display: grid;
+    gap: 24px;
+  }
+  
+  @media (min-width: 768px) {
+    .advice-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .advice-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  /* Cards */
+  .advice-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .advice-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  }
+  
+  .advice-image {
+    width: 100%;
+    height: 192px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  
+  /* Typography */
+  .conseil-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #047857;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  
+  .advice-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+  }
+  
+  .advice-desc {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #475569;
+  }
+  
+  /* Buttons */
+  .action-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .faq-btn {
+    background-color: #10b981;
+    color: white;
+  }
+  
+  .faq-btn:hover {
+    background-color: #059669;
+  }
+  
+  .telechar-btn {
+    background-color: #3b82f6;
+    color: white;
+  }
+  
+  .telechar-btn:hover {
+    background-color: #2563eb;
+  }
