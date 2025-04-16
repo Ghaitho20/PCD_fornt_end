@@ -30,16 +30,24 @@ import ParagraphActPha from './components/Stats/Overview/paragraphActPha';
 import ActivitePharmacie from './components/Stats/Overview/activitePharmacie';
 import EditActivitePharmacie from './components/Stats/editStatsPage/EditActivitePharmacie';
 import ChatBot from './components/ChatBot/ChatBot';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
-
     /*<Forum/>*/
-
-
-    <ALL/>
     
+<>
 
+  <ALL/>
+
+
+
+
+  {/* your routes, layout, etc. */}
+  <ToastContainer position="top-right" autoClose={3000} />
+
+</>
 
   );
 }

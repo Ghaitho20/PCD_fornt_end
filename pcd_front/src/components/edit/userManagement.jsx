@@ -1,70 +1,109 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FaUserPlus, FaTrash } from 'react-icons/fa';
 import '../../assets/css/edit/userManagement.css';
-
-// Function to generate a random 8-character password
-const generatePassword = () => {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let password = '';
-  for (let i = 0; i < 8; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return password;
-};
+import { toast } from 'react-toastify';
 
 const UserManagement = () => {
-  // State for managing users and form inputs
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('user');
   const [error, setError] = useState('');
 
-  // Placeholder function to add a user (replace with API call later)
-  const addUser = (newUser) => {
-    setUsers([...users, { ...newUser, id: Date.now() }]); // Temporary ID using timestamp
-  };
+  const API_BASE = 'http://localhost:8080/api/users';
 
-  // Placeholder function to delete a user (replace with API call later)
-  const deleteUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
-  };
+  //Charger tous les utilisateurs au montage
+  useEffect(() => {
+    
 
+    fetchAllUsers();
+  }, []);
+
+
+  const fetchAllUsers = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = user?.token;
+      
+      const response = await axios.get(`${API_BASE}/getAllUsers`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des utilisateurs', error);
+      toast.error('Erreur lors de la récupération des utilisateurs');
+    }
+  };
   
+
+  // Ajouter un utilisateur
+  const addUserToBackend = async (user) => {
+    try {
+      const response = await axios.post(`${API_BASE}/add`, user);
+      alert(response.data);
+      fetchAllUsers(); // Met à jour la liste après ajout
+    } catch (err) {
+      console.error(err);
+      setError("Erreur lors de l’ajout de l’utilisateur");
+    }
+  };
+
+  // Supprimer un utilisateur via son email
+  const deleteUserFromBackend = async (email) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = user?.token;
+  
+      await axios.delete(`${API_BASE}/delete-by-email`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { email },
+      });
+  
+      fetchAllUsers(); // Rafraîchir la liste après suppression
+    } catch (err) {
+      console.error(err);
+      setError("Erreur lors de la suppression de l’utilisateur");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
-    // Basic validation
     if (!name.trim() || !email.trim()) {
-      setError('Please enter both name and email');
+      setError('Veuillez remplir tous les champs');
       return;
     }
 
-    
-    const password = generatePassword();
-    const newUser = { name, email, password };
-    addUser(newUser);
+    const newUser = {
+      username: name,
+      email: email,
+      role: role.toUpperCase(),
+    };
 
-    
+    addUserToBackend(newUser);
+
     setName('');
     setEmail('');
-    alert(`User added with password: ${password}`); 
+    setRole('');
   };
 
   return (
     <div className="user-management">
-      <h1>User Management</h1>
+      <h1>Gestion des utilisateurs</h1>
 
-      {/* Form to add new users */}
       <form onSubmit={handleSubmit} className="add-user-form">
         <div className="form-group">
-          <label htmlFor="name">Full Name</label>
+          <label htmlFor="name">Nom de médecin</label>
           <input
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter full name"
+            placeholder="Nom du médecin"
+            required
           />
         </div>
         <div className="form-group">
@@ -74,29 +113,40 @@ const UserManagement = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
+            placeholder="Email"
+            required
           />
+        </div>  
+        <div className="form-group">
+          <label htmlFor="role">Rôle</label>
+          <select id="role" value={role} onChange={(e) => setRole(e.target.value)} required>
+          <option value="" disabled hidden>-- Sélectionner un rôle --</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
         </div>
         {error && <p className="error">{error}</p>}
         <button type="submit" className="add-button">
-          <FaUserPlus /> Add User
+          <FaUserPlus /> Ajouter un utilisateur
         </button>
       </form>
 
-      {/* List of existing users */}
       <div className="user-list">
-        <h2>Existing Users</h2>
+        <h2 className='text-center'>Utilisateurs existants</h2>
         {users.length === 0 ? (
-          <p>No users added yet.</p>
+          <p>Aucun utilisateur ajouté.</p>
         ) : (
           <ul>
-            {users.map((user) => (
-              <li key={user.id}>
-                <span>{user.name} ({user.email})</span>
-                <button onClick={() => deleteUser(user.id)} className="delete-button">
-                  <FaTrash /> Delete
+            {users.map((user, index) => (
+              <li key={index}>
+                <span>{user.username} ({user.email}) - {user.role}</span>
+                <button onClick={() => deleteUserFromBackend(user.email)} className="delete-button123">
+                  <FaTrash /> Supprimer
                 </button>
+
+
               </li>
+
             ))}
           </ul>
         )}
