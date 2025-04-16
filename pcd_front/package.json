@@ -21,7 +21,7 @@
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
-    "daisyui": "^5.0.9",
+    "daisyui": "^5.0.18",
     "emoji-picker-react": "^4.12.2",
     "firebase": "^11.5.0",
     "fortawesome": "^0.0.1-security",
