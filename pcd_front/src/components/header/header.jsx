@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../../assets/css/header/header.css';
@@ -6,6 +6,11 @@ import logo from '../../assets/images/dashboard/logo3.png'
 import { FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin ,FaFacebookMessenger} from 'react-icons/fa';
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
+import axios from 'axios';
+import { toast } from "react-toastify";
+import { getUserName } from '../Security&Auth/authUtils';
+
+
 const TopBar = () => {
   return(
       <div className="bg-gradient-to-r from-[#7bed9f] via-[#a1c6ea] to-[#7bed9f] text-white text-sm py-2 px-4 flex justify-between items-center">
@@ -29,7 +34,7 @@ const TopBar = () => {
 };
 
 const Header = ({superUser,User}) => {
-  console.log('superUser:', superUser, 'User:', User);
+
   return (
     <nav className= "fixed  z-50 w-full top-0" >
       <TopBar/>
@@ -41,13 +46,94 @@ const Header = ({superUser,User}) => {
 
 const Header1 = ({superUser,User}) => {
 
-  console.log('superUser:', superUser, 'User:', User);
-   const [isOpen,setIsOpen] = useState(false);
-  
-    const handleDialogConn = ()=>{
+
+  const [isOpen,setIsOpen] = useState(false);
+  const [isClicked,setIsClicked] = useState(false);
+  const [user_name,setUser_name] = useState("");
+
+  useContext(()=>{
+    const name = getUserName();
+    setUser_name(name);
+  },[])
+
+  const handleDialogConn = ()=>{
       setIsOpen(!isOpen);
       console.log(isOpen)
+  }
+  const handleForgetPassword = ()=>{    
+      setIsOpen(false);
+      setIsClicked(!isClicked);
+  }
+  const handleLogin= async (event) => {
+    event.preventDefault(); //empecher le chargement de la page 
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    try{
+      const response = await axios.post('http://localhost:8080/api/users/login',{
+        email,
+        password
+      });
+
+      //Reponse du Backend 
+      const data = response.data;
+      console.log("Connexion réussie", data);
+
+
+      toast.success("Login Successfull");
+
+    // Save to token and username and userRole localStorage
+      localStorage.setItem("user", JSON.stringify(data));
+
+      //Fermer le Dialog 
+      setIsOpen(false);
+      window.location.reload();
+
+      // Rediriger ou recharger si nécessaire
+      // window.location.href = "/Homepage";
+    }catch(error){
+      console.error("Erreur lors de la connexion", error);
+      alert("Email ou mot de passe incorrect.");
+      
     }
+
+
+  }
+
+  const [resetEmail, setResetEmail] = useState('');
+
+  const handleMailReset = async () => {
+    if (!resetEmail.trim()) {
+      toast.error("Veuillez entrer une adresse email.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/users/forgot-password',
+        resetEmail,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        }
+      );
+
+      toast.success(response.data); // "Email de réinitialisation envoyé !"
+      setIsClicked(false); // Close dialog
+      setResetEmail(''); // Reset field
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de l'email de réinitialisation", error);
+      toast.error("Erreur lors de l'envoi du mail. Veuillez réessayer.");
+    }
+  };
+
+  const handleLogOut = ()=>{
+    localStorage.removeItem("user"); // Remove the saved user info (including token)
+    window.location.href = "/"; // Or use navigate("/login") if using React Router
+    toast.success("Déconnexion réussie !");
+  };
+
+
 
   return (
     <header className="header bg-[#2c3e50] text-white py-4 ">
@@ -63,6 +149,8 @@ const Header1 = ({superUser,User}) => {
 
         </div>
       </div>
+
+      {user_name==='visiteur' && <p>bienvenu {user_name}</p>}
 
       {/* Center: Navigation Menu */}
       <nav className="nav-menu flex-grow flex justify-center">
@@ -114,7 +202,7 @@ const Header1 = ({superUser,User}) => {
           {/** drop 2 */}
           {superUser && (
             <li className="nav-item dropdown-custom">
-            <span className="nav-link dropdown-toggle">Edit</span>
+            <span className="nav-link dropdown-toggle">Modifier</span>
             <ul className="dropdown-menu-custom">
               <li>
                 <Link className="dropdown-item" to="/edit/news">
@@ -134,6 +222,11 @@ const Header1 = ({superUser,User}) => {
               <li>
                 <Link className="dropdown-item" to="/edit/germs-overview">
                   Germs Overview
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/edit/pres-membre-proj">
+                  la presentation de membre de projet 
                 </Link>
               </li>
             </ul>
@@ -179,15 +272,16 @@ const Header1 = ({superUser,User}) => {
 
 
 
-    {(superUser || User) &&(<button>
-           <FaFacebookMessenger/>
-        </button>)}
+    {(superUser || User) &&(
+      <Link to="/forum">
+          <FaFacebookMessenger/>
+      </Link>)}
         {(superUser || User) &&(<button>
           <span class="material-symbols-outlined">
               notifications
           </span>
         </button>)}
-        {(superUser || User) &&<button className="logout-btn bg-transparent text-white ">
+        {(superUser || User) &&<button className="logout-btn bg-transparent text-white " onClick={handleLogOut}>
           <FaSignOutAlt className="logout-icon " /> 
         </button>}
       </div>
@@ -200,19 +294,22 @@ const Header1 = ({superUser,User}) => {
                   {/* Dialog Panel */}
                   <Dialog.Panel className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative z-50">
                     <h2 className="text-xl font-bold mb-4">Connexion Espace Médecin</h2>
-                    <form>
-                      <label className="block mb-2">Courriel ou identifiant *</label>
-                      <input type="text" className="w-full p-2 border rounded mb-4" />
+                    <form onSubmit={handleLogin}>
+                      <label className="block mb-2">Email *</label>
+                      <input name="email" type="text" className="w-full p-2 border rounded mb-4" required/>
           
                       <label className="block mb-2">Mot de passe *</label>
-                      <input type="password" className="w-full p-2 border rounded mb-4" />
+                      <input  name="password" type="password" className="w-full p-2 border rounded mb-4"required />
           
-                      <a href="#" className="text-blue-600 text-sm">
-                        Réinitialiser votre mot de passe
-                      </a>
+
+                      <Link className="text-blue-600 text-sm" onClick={handleForgetPassword}>
+                      mot de passe oublié?
+
+                      
+                      </Link>
           
                       <div className="mt-4 flex justify-between">
-                        <button type="button" className="bg-[#333D79] text-white px-4 py-2 rounded" onClick={handleDialogConn}>
+                        <button type="submit" className="bg-[#333D79] text-white px-4 py-2 rounded" >
                           Se connecter
                         </button>
                         <button type="button" className="text-gray-600 px-4 py-2" onClick={handleDialogConn}>
@@ -221,7 +318,40 @@ const Header1 = ({superUser,User}) => {
                       </div>
                     </form>
                   </Dialog.Panel>
-                </Dialog>    
+                </Dialog>  
+
+                {/* Dialog pour le Mot de passe oublié */}
+
+                <Dialog open={isClicked} onClose={handleForgetPassword} className="fixed inset-0 flex items-center justify-center z-50">
+                  {/* Overlay */}
+                  <div className="fixed inset-0 bg-black bg-opacity-50" aria-hidden="true"></div>
+          
+                  {/* Dialog Panel */}
+                  <Dialog.Panel className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative z-50">
+                    <h2 className="text-xl font-bold mb-4">Mot de passe oublié</h2>
+                    <form>
+                      <label className="block mb-2">Ecrivez votre adresse mail  </label>
+                      <input
+                        type="email"
+                        className="w-full p-2 border rounded mb-4"
+                        required
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                      />
+          
+                      <div className="mt-4 flex justify-between">
+                        <button type="button" className="bg-[#333D79] text-white px-4 py-2 rounded" onClick={handleMailReset}>
+                          Confirmer 
+                        </button>
+                        <button type="button" className="text-gray-600 px-4 py-2" onClick={handleForgetPassword}>
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </Dialog.Panel>
+                </Dialog>  
+
+
 
 
 

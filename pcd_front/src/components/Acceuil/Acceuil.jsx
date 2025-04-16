@@ -67,6 +67,7 @@ export default function Acceuil() {
     <Actualite/>
     <Membre_projet_def></Membre_projet_def>
     <ContactSection></ContactSection>
+    
     <ChatBot></ChatBot> 
     <Footer></Footer>
     </>

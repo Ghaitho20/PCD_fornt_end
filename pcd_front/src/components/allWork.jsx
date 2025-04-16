@@ -17,25 +17,80 @@ import UserManagement from './edit/userManagement';
 import EditNewsPage from './edit/editNews';
 import DiseaseEditor from './Stats/editStatsPage/DiseaseEditor';
 import GermEditor from './Stats/editStatsPage/HygieneEditor';
-
+import ResetPassword from './header/ResetPassword';
+import Forum from './forum/forum';
+import EditMembresPage from './edit/EditMembresPage'
+import RoleProtectedRoute from './Security&Auth/RoleProtectedRoute';
 const ALL = () => {
-  let superUser = true;
-  let User =  true;
+
+  /*const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+  };*/
+  
+
+  /*const [user, setUser] = useState(() => {
+    // Load user from localStorage if available
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });*/
+
+  //let superUser = true;
+  //let User =  true;
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  const role = userData?.userRole;
+
+  const isSuperUser = role === "ADMIN";
+  const isUser = role === "USER";
+
 
   return (
     <Router>
-      <Header superUser={false} User={false} />
+      <Header superUser={isSuperUser} User={isUser } />
       <Routes>
         {/* Set Acceuil as the default route at "/" */}
         <Route path="/" element={<Acceuil />} />
 
         {/* Other routes */}
-        <Route path="/ai-recommendation" element={<AIRecommendation />} />
-        <Route path="/edit/stats" element={<EditStatisticsPage />} />
-        <Route path="/edit/news" element={<EditNewsPage />} />
+        <Route path="/ai-recommendation" 
+          element={
+            <RoleProtectedRoute allowedRoles={['USER','ADMIN']}>
+              <AIRecommendation />
+            </RoleProtectedRoute>
+          }
+        />
+        <Route path="/edit/stats" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+             <EditStatisticsPage/> 
+          </RoleProtectedRoute>
+          
+        } 
+        />
+        <Route path="/edit/news" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+             <EditNewsPage />
+          </RoleProtectedRoute>
+        }
+        />
         
-        <Route path="/edit/diseases-overview" element={<DiseaseEditor />} />
-        <Route path="/edit/germs-overview" element={<GermEditor/>} />
+        <Route path="/edit/diseases-overview" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <DiseaseEditor />
+          </RoleProtectedRoute>
+        }
+        />
+
+        <Route path="/edit/germs-overview" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <GermEditor/>
+          </RoleProtectedRoute>
+        }
+        />
 
         <Route path="/statistics/overview" element={<StatsPage />} />
         <Route path="/statistics/diseases" element={<DiseaseOverview />} />
@@ -44,12 +99,52 @@ const ALL = () => {
 
         {/* Optionally keep /Homepage as an alias for Acceuil */}
         <Route path="/Homepage" element={<Acceuil />} />
-        <Route path = "/manage-accounts" element= {<UserManagement/>} />
-        <Route path="/calendar" element={<GoogleCalendar />} />
-        <Route path="/usercalendar" element={<UserCalendar />} />
+
+        <Route path = "/manage-accounts" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <UserManagement/>
+          </RoleProtectedRoute>
+        } 
+        />
+
+        <Route path="/calendar" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <GoogleCalendar/>
+          </RoleProtectedRoute>
+        }/>
+
+        <Route path="/usercalendar" 
+        element={
+          <RoleProtectedRoute allowedRoles={['USER']}>
+              <UserCalendar />
+          </RoleProtectedRoute>
+        }
+        />
         <Route path="/contactUS" element={<ContactUS />} />
         <Route path="/Brochure" element={<Brochure />} />
-        <Route path="/admineBrochure" element={<AdminBrochure />} />
+
+        <Route path="/admineBrochure" 
+        element={<AdminBrochure />
+
+        }/>
+        <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/forum" 
+        element={
+          <RoleProtectedRoute allowedRoles={['USER','ADMIN']}>
+            <Forum />
+          </RoleProtectedRoute>
+        }
+        />
+        <Route path="/edit/pres-membre-proj" 
+        element={
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+            <EditMembresPage/>
+          </RoleProtectedRoute>
+        
+        }
+        />
 
       </Routes>
     </Router>
