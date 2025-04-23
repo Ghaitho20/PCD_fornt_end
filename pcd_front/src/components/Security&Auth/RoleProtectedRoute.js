@@ -4,6 +4,8 @@ import { getUserRole } from './authUtils';
 
 const RoleProtectedRoute = ({ children, allowedRoles }) => {
   const role = getUserRole();
+  
+  
 
   if (role === "VISITOR") {
     return <Navigate to="/Homepage" replace />;

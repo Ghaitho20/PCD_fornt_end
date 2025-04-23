@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+
 import { FaSignOutAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import '../../assets/css/header/header.css';
@@ -9,6 +9,11 @@ import { useState } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { getUserName } from '../Security&Auth/authUtils';
+import React, { useEffect,useContext } from "react";
+
+
+
+
 
 
 const TopBar = () => {
@@ -51,10 +56,14 @@ const Header1 = ({superUser,User}) => {
   const [isClicked,setIsClicked] = useState(false);
   const [user_name,setUser_name] = useState("");
 
-  useContext(()=>{
-    const name = getUserName();
-    setUser_name(name);
-  },[])
+  useEffect(() => {
+    const fetchName = async () => {
+      const name = await getUserName();
+      setUser_name(name);
+      console.log(name);
+    };
+    fetchName();
+  }, []);
 
   const handleDialogConn = ()=>{
       setIsOpen(!isOpen);
@@ -150,7 +159,11 @@ const Header1 = ({superUser,User}) => {
         </div>
       </div>
 
-      {user_name==='visiteur' && <p>bienvenu {user_name}</p>}
+        {(superUser || User) && (
+        <p className="text-xl font-semibold text-white bg-transparent from-indigo-500 to-purple-600 px-5 py-2 rounded-2xl shadow-md">
+            Bienvenu {user_name} 👋
+        </p>
+         )}
 
       {/* Center: Navigation Menu */}
       <nav className="nav-menu flex-grow flex justify-center">

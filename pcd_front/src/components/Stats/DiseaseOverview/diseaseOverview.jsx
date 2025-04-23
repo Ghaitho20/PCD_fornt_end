@@ -12,10 +12,18 @@ import ChatBot from "../../ChatBot/ChatBot";
 const DiseaseOverview = () => {
 
   const [diseases, setDiseases] = useState([]);
+
+  const getAuthHeaders = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.token;
+    return { Authorization: `Bearer ${token}` };
+  };
     
   // Fetch diseases on component mount
   useEffect(() => {
-    axios.get("http://localhost:8080/diseases")
+    axios.get("http://localhost:8080/diseases", {
+      headers: getAuthHeaders(),
+    })
       .then(response => setDiseases(response.data))
       .catch(error => console.error("Error fetching diseases:", error));
 

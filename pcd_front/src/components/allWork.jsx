@@ -47,6 +47,7 @@ const ALL = () => {
 
   return (
     <Router>
+      
       <Header superUser={isSuperUser} User={isUser } />
       <Routes>
         {/* Set Acceuil as the default route at "/" */}
