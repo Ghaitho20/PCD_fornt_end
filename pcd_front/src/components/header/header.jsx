@@ -5,10 +5,11 @@ import '../../assets/css/header/header.css';
 import logo from '../../assets/images/dashboard/logo3.png'
 import { FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin ,FaFacebookMessenger} from 'react-icons/fa';
 import { Dialog } from "@headlessui/react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { getUserName } from '../Security&Auth/authUtils';
+
 
 
 const TopBar = () => {
@@ -51,10 +52,14 @@ const Header1 = ({superUser,User}) => {
   const [isClicked,setIsClicked] = useState(false);
   const [user_name,setUser_name] = useState("");
 
-  useContext(()=>{
-    const name = getUserName();
-    setUser_name(name);
-  },[])
+  useEffect(() => {
+    const fetchUserName = async () => {
+      // Assuming getUserName() is an async function
+      const name = await getUserName();
+      setUser_name(name);
+    };
+    fetchUserName();
+  }, []);
 
   const handleDialogConn = ()=>{
       setIsOpen(!isOpen);
@@ -150,7 +155,11 @@ const Header1 = ({superUser,User}) => {
         </div>
       </div>
 
-      {user_name==='visiteur' && <p>bienvenu {user_name}</p>}
+      {(superUser || User) && (
+      <p className="text-xl font-semibold text-white bg-transparent from-indigo-500 to-purple-600 px-10 py-2 rounded-2xl shadow-md">
+        Bienvenu {user_name} 👋
+      </p>
+    )}
 
       {/* Center: Navigation Menu */}
       <nav className="nav-menu flex-grow flex justify-center">
