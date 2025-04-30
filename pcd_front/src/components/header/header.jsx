@@ -166,7 +166,7 @@ const Header1 = ({superUser,User}) => {
         <ul className="nav-list flex gap-8">
           <li className="nav-item">
             <Link className="nav-link" to="/Homepage">
-              Homepage
+              Acceuil
             </Link>
           </li>
           <li className="nav-item">
@@ -175,21 +175,21 @@ const Header1 = ({superUser,User}) => {
             </Link>
           </li>
           <li className="nav-item dropdown-custom">
-            <span className="nav-link dropdown-toggle">Statistics</span>
+            <span className="nav-link dropdown-toggle">Statistique</span>
             <ul className="dropdown-menu-custom">
               <li>
                 <Link className="dropdown-item" to="/statistics/overview">
-                  Overview
+                Vue d'ensemble
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/statistics/diseases">
-                  Diseases Overview
+                Aperçu des maladies
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/statistics/hygiene">
-                  Hygiene
+                Hygiène
                 </Link>
               </li>
             </ul>
@@ -198,13 +198,13 @@ const Header1 = ({superUser,User}) => {
 
           { (superUser || User ) && (<li className="nav-item">
             <Link className="nav-link" to="/ai-recommendation">
-              AI Tools
+              Outils de Recommandation
             </Link>
           </li>)}
 
           {superUser && (<li className="nav-item">
             <Link className="nav-link" to="/Calendar">
-              Calendar
+              Calendrier
             </Link>
             </li>)}
 
@@ -215,22 +215,22 @@ const Header1 = ({superUser,User}) => {
             <ul className="dropdown-menu-custom">
               <li>
                 <Link className="dropdown-item" to="/edit/news">
-                  News
+                  Nouveautés
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/edit/stats">
-                  Statistics
+                  Statistiques
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/edit/diseases-overview">
-                  Diseases Overview
+                  les statistiques des maladies
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/edit/germs-overview">
-                  Germs Overview
+                  Les statistiques de germes
                 </Link>
               </li>
               <li>
@@ -246,7 +246,7 @@ const Header1 = ({superUser,User}) => {
             <li className="nav-item">
 
               <Link className="nav-link" to="/manage-accounts">
-                Manage accounts
+                Gérer les comptes 
 
 
               
@@ -312,7 +312,7 @@ const Header1 = ({superUser,User}) => {
           
 
                       <Link className="text-blue-600 text-sm" onClick={handleForgetPassword}>
-                      mot de passe oublié?
+                      mot de passe oublié ?
 
                       
                       </Link>

@@ -22,7 +22,7 @@ const IntroductionCentre = ()=>{
     <div className="flex flex-col items-center text-center">
       {/* Section Accueil */}
       <section className="w-full p-10 bg-white">
-        <h2 className="text-3xl font-bold mb-2 text-gray-700 ">Bienvenu au CDMO</h2>
+        <h2 className="text-3xl font-bold mb-2 text-gray-700 ">Bienvenu au CNGMO </h2>
         <p className="max-w-2xl mx-auto text-gray-600 mb-4">  
         Chères consœurs, chers confrères,
 
