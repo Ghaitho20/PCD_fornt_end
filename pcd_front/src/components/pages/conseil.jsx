@@ -20,7 +20,7 @@ const Conseil = () =>
 
     return (
         <div className="w-screen bg-gray-50 py-12">
-        <div className="container mx-auto px-6">
+        <div className="mx-auto px-6">
           <h3 className="text-xl font-bold text-green-500 mb-4">Conseils pour les visiteurs</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {visitorAdvice.map((advice, index) => (

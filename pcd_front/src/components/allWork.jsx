@@ -10,7 +10,6 @@ import GoogleCalendar from './Calendar/GoogleCalendar';
 import ContactUS from './ContactUS/contactup';
 import Brochure from './pages/Brochure';
 import UserCalendar from './Calendar/UserCalendar';
-import AdminBrochure from './pages/AdminBrochure';
 import Acceuil from './Acceuil/Acceuil';
 import EditStatisticsPage from './Stats/editStatsPage/EditStatisticsPage';
 import UserManagement from './edit/userManagement';
@@ -21,6 +20,8 @@ import ResetPassword from './header/ResetPassword';
 import Forum from './forum/forum';
 import EditMembresPage from './edit/EditMembresPage'
 import RoleProtectedRoute from './Security&Auth/RoleProtectedRoute';
+import Actualite from './edit/editactualite';
+import AdminBrochure from './edit/AdminBrochure';
 const ALL = () => {
 
   /*const handleLogout = () => {
@@ -48,7 +49,7 @@ const ALL = () => {
   return (
     <Router>
       
-      <Header superUser={isSuperUser} User={isUser } />
+      <Header superUser={isSuperUser} User={isUser}/>
       <Routes>
         {/* Set Acceuil as the default route at "/" */}
         <Route path="/" element={<Acceuil />} />
@@ -69,13 +70,7 @@ const ALL = () => {
           
         } 
         />
-        <Route path="/edit/news" 
-        element={
-          <RoleProtectedRoute allowedRoles={['ADMIN']}>
-             <EditNewsPage />
-          </RoleProtectedRoute>
-        }
-        />
+
         
         <Route path="/edit/diseases-overview" 
         element={
@@ -116,20 +111,33 @@ const ALL = () => {
           </RoleProtectedRoute>
         }/>
 
-        <Route path="/usercalendar" 
+
+        <Route path="/calendar" 
         element={
-          <RoleProtectedRoute allowedRoles={['USER']}>
-              <UserCalendar />
+          <RoleProtectedRoute allowedRoles={['ADMIN']}>
+              <GoogleCalendar/>
           </RoleProtectedRoute>
-        }
-        />
+        } />
         <Route path="/contactUS" element={<ContactUS />} />
+
+        
         <Route path="/Brochure" element={<Brochure />} />
 
-        <Route path="/admineBrochure" 
-        element={<AdminBrochure />
+        <Route path="/admineBrochure" element={
+                    <RoleProtectedRoute allowedRoles={['ADMIN']}>
+                                <AdminBrochure />
+                    </RoleProtectedRoute>
+          } />
 
-        }/>
+        <Route path="/Actualite" element={
+              <RoleProtectedRoute allowedRoles={['ADMIN']}>
+                  <Actualite />
+              </RoleProtectedRoute>
+          } />
+
+        
+
+       
         <Route path="/ResetPassword" element={<ResetPassword />} />
         <Route path="/forum" 
         element={

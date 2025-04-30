@@ -9,21 +9,21 @@ const Footer = () => {
             <div className="footer-container19 flex">
                 {/* Mission Section */}
                 <div className="footer-column mission">
-                    <h3><img  className="logoStyle" src={logo}/> Marrow Transplant Center</h3>
-                    <p>Saving lives through advanced marrow transplant care and research.</p>
+                    <h3><img  className="logoStyle" src={logo}/>Centre nationale de greffe de moelle osseuse</h3>
+                    <p>Sauver des vies grâce à des soins avancés de transplantation de moelle osseuse et à la recherche.</p>
                 </div>
 
                 {/* Contact Section */}
                 <div className="footer-column contact">
-                    <h3>Contact</h3>
-                    <p><i className="fas fa-envelope"></i> info@marrowcenter.org</p>
-                    <p><i className="fas fa-phone"></i> Phone: (800) 555-0123</p>
-                    <p><i className="fas fa-map-marker-alt"></i> 456 Hope Ave, Healing City, HC 90210</p>
+                    <h3>Contacter</h3>
+                    <p><i className="fas fa-envelope"></i>Centredegreffe@gmail.com</p>
+                    <p><i className="fas fa-phone"></i> Tél/FAX : 71 568 903</p>
+                    <p><i className="fas fa-map-marker-alt"></i> 13, rue Djebel Lakhdhar Bab Saadoun-Tunis-1006</p>
                 </div>
 
                 {/* Social Media Section */}
                 <div className="footer-column social">
-                    <h3>Connect With Us</h3>
+                    <h3>Réseaux sociaux</h3>
                     <p>
                         <a href="https://facebook.com/marrowcenter" target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-facebook-f"></i> Facebook
@@ -37,7 +37,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className="footer-bottom">
-                <p>&copy; 2023 Marrow Transplant Center. All Rights Reserved.</p>
+            <p >&copy; 2025 Centre national de greffe de moelle osseuse,tous droits réservés.</p>
             </div>
         </footer>
     );

@@ -5,12 +5,12 @@ import '../../assets/css/header/header.css';
 import logo from '../../assets/images/dashboard/logo3.png'
 import { FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin ,FaFacebookMessenger} from 'react-icons/fa';
 import { Dialog } from "@headlessui/react";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { getUserName } from '../Security&Auth/authUtils';
 import React, { useEffect,useContext } from "react";
-
+import  Notifications  from './Notifications';
 
 
 
@@ -21,8 +21,8 @@ const TopBar = () => {
   return(
       <div className="bg-gradient-to-r from-[#7bed9f] via-[#a1c6ea] to-[#7bed9f] text-white text-sm py-2 px-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1"><FaPhone /> +216 71 79 57 22</span>
-          <span className="flex items-center gap-1"><FaEnvelope /> info@cnopt.tn</span>
+          <span className="flex items-center gap-1"><FaPhone /> +216 71 568 903</span>
+          <span className="flex items-center gap-1"><FaEnvelope /> Centredegreffe@gmail.com</span>
         </div>
         <div className="flex items-center gap-4">
           <Link className="hover:text-gray-300" to="#">
@@ -180,6 +180,11 @@ const Header1 = ({superUser,User}) => {
                 Brochure
             </Link>
           </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/contactUS">
+                Contactez-nous
+            </Link>
+          </li>
           <li className="nav-item dropdown-custom">
             <span className="nav-link dropdown-toggle">Statistique</span>
             <ul className="dropdown-menu-custom">
@@ -219,11 +224,7 @@ const Header1 = ({superUser,User}) => {
             <li className="nav-item dropdown-custom">
             <span className="nav-link dropdown-toggle">Modifier</span>
             <ul className="dropdown-menu-custom">
-              <li>
-                <Link className="dropdown-item" to="/edit/news">
-                  Nouveautés
-                </Link>
-              </li>
+
               <li>
                 <Link className="dropdown-item" to="/edit/stats">
                   Statistiques
@@ -242,6 +243,16 @@ const Header1 = ({superUser,User}) => {
               <li>
                 <Link className="dropdown-item" to="/edit/pres-membre-proj">
                   la presentation de membre de projet 
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/admineBrochure">
+                  Qestions et documents 
+                </Link>
+              </li>
+              <li>
+                <Link className="dropdown-item" to="/Actualite">
+                 Actualité
                 </Link>
               </li>
             </ul>
@@ -287,15 +298,11 @@ const Header1 = ({superUser,User}) => {
 
 
 
-    {(superUser || User) &&(
+{(superUser || User) &&(
       <Link to="/forum">
           <FaFacebookMessenger/>
       </Link>)}
-        {(superUser || User) &&(<button>
-          <span class="material-symbols-outlined">
-              notifications
-          </span>
-        </button>)}
+      {(superUser || User) && <Notifications />}
         {(superUser || User) &&<button className="logout-btn bg-transparent text-white " onClick={handleLogOut}>
           <FaSignOutAlt className="logout-icon " /> 
         </button>}

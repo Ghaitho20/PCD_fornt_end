@@ -13,9 +13,8 @@ export default function Brochure() {
       <Carousel/>  
       <Conseil/>
       <Faqs1/>
-      <ContactSection/>
-      <ChatBot/>
       <Footer/>
+      <ChatBot/>
     </div>
   );
 }

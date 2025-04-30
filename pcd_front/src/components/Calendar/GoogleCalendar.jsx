@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import image from "../../assets/calendar.jpg"
+import ik from "../../assets/calendar.jpg"
+import Footer from '../footer/footer';
+import ChatBot from "../ChatBot/ChatBot";
+
 
 const CLIENT_ID = '672081373696-i47g5vd5uks8r2c4sf0qclkd5l9tvqhj.apps.googleusercontent.com';
 const SCOPES = [
@@ -287,25 +290,26 @@ const GoogleCalendar = () => {
     }, [successMessage]);
 
     return (
-        <div className="relative flex flex-col items-center justify-center min-h-screen p-4">
+        <div className="relative flex flex-col items-center justify-center min-h-screen p-4 pt-20">
       <img 
-        src={image} 
-        alt="Background" 
-        className="absolute top-0 left-0 w-full h-full object-cover z-[-1]" 
-      />
+        src={ik} 
+        alt="" 
+        aria-hidden="true"
+        className="absolute top-0 left-0 w-full h-full object-cover z-[-1] " 
+    />
             {!user ? (
                 <div className="text-center">
                     <div id="signInDiv" className="inline-block"></div>
                 </div>
             ) : (
                 <div>
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-2xl font-bold text-gray-800">Google Calendar Organizer</h1>
+                    <div className="flex justify-between items-center mb-6 pt -20">
+                        <h1 className="text-2xl font-bold text-gray-800">Organisateur de Google Calendar</h1>
                         <button 
                             onClick={handleSignOut}
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                         >
-                            Sign Out
+                            Se déconnecter
                         </button>
                     </div>
 
@@ -314,32 +318,34 @@ const GoogleCalendar = () => {
                             {successMessage}
                         </div>
                     )}
+                    <br></br>
+                    <br></br>
 
-                    <div className="flex space-x-4 mb-6">
+                    <div className="flex space-x-4 mb-6 pt-20">
                         <button
                             onClick={() => setActiveTab('create')}
                             className={`px-4 py-2 rounded ${activeTab === 'create' ? 'bg-green-600 text-white' : 'bg-green-500 text-white hover:bg-green-600'} transition`}
                         >
-                            Create Event
+                            Créer un événement
                         </button>
                         <button
                             onClick={() => setActiveTab('manage')}
                             className={`px-4 py-2 rounded ${activeTab === 'manage' ? 'bg-green-600 text-white' : 'bg-green-500 text-white hover:bg-green-600'} transition`}
                         >
-                            My Events
+                            Mes événements
                         </button>
                     </div>
 
                     {activeTab === 'create' && (
                         <div className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
                             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                                Create New Event
+                                Créer un nouvel événement
                             </h2>
                             
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-gray-700 text-sm font-medium mb-2">
-                                        Event Title*
+                                    Titre de l'événement *
                                     </label>
                                     <input
                                         type="text"
@@ -352,7 +358,7 @@ const GoogleCalendar = () => {
 
                                 <div>
                                     <label className="block text-gray-700 text-sm font-medium mb-2">
-                                        Location (optional)
+                                        Localisation (Facultatif)
                                     </label>
                                     <input
                                         type="text"
@@ -364,7 +370,7 @@ const GoogleCalendar = () => {
 
                                 <div>
                                     <label className="block text-gray-700 text-sm font-medium mb-2">
-                                        Description (optional)
+                                        Description (Facultatif)
                                     </label>
                                     <textarea
                                         value={eventData.description}
@@ -376,7 +382,7 @@ const GoogleCalendar = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-gray-700 text-sm font-medium mb-2">
-                                            Start Date & Time*
+                                        Start Date & Time*
                                         </label>
                                         <input
                                             type="datetime-local"
@@ -388,7 +394,7 @@ const GoogleCalendar = () => {
                                     </div>
                                     <div>
                                         <label className="block text-gray-700 text-sm font-medium mb-2">
-                                            End Date & Time*
+                                        Date et heure de fin
                                         </label>
                                         <input
                                             type="datetime-local"
@@ -401,7 +407,7 @@ const GoogleCalendar = () => {
                                 </div>
 
                                 <div className="border border-gray-200 p-4 rounded-md">
-                                    <h3 className="font-semibold text-gray-700 mb-2">Attendees (optional)</h3>
+                                    <h3 className="font-semibold text-gray-700 mb-2">Participant(Facultatif)</h3>
                                     <div className="flex mb-2">
                                         <input
                                             type="email"
@@ -414,7 +420,7 @@ const GoogleCalendar = () => {
                                             onClick={addAttendee}
                                             className="bg-green-500 text-white px-4 rounded-r-md hover:bg-green-600 transition"
                                         >
-                                            Add
+                                            Ajouter 
                                         </button>
                                     </div>
                                     <div className="space-y-2">
@@ -437,7 +443,7 @@ const GoogleCalendar = () => {
                                     className="w-full bg-green-500 text-white py-3 px-4 rounded-md hover:bg-green-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 disabled:bg-gray-400"
                                     disabled={!eventData.summary || !eventData.startDateTime || !eventData.endDateTime}
                                 >
-                                    Create Event
+                                    Créer un événement
                                 </button>
                             </div>
                         </div>
@@ -445,7 +451,7 @@ const GoogleCalendar = () => {
 
                     {activeTab === 'manage' && (
                         <div className="bg-white shadow-md rounded-lg p-6">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-6">Manage Your Events</h2>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6">Gérez vos événements</h2>
                             <button
                                 onClick={fetchEvents}
                                 className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600 transition disabled:bg-gray-400"
@@ -456,11 +462,11 @@ const GoogleCalendar = () => {
 
                             {eventToEdit ? (
                                 <div className="max-w-md mx-auto space-y-4">
-                                    <h3 className="text-lg font-semibold text-gray-800">Edit Event</h3>
+                                    <h3 className="text-lg font-semibold text-gray-800">Modifier l'événement</h3>
                                     
                                     <div>
                                         <label className="block text-gray-700 text-sm font-medium mb-2">
-                                            Event Title
+                                        Titre de l'événement
                                         </label>
                                         <input
                                             type="text"
@@ -472,7 +478,7 @@ const GoogleCalendar = () => {
                                     
                                     <div>
                                         <label className="block text-gray-700 text-sm font-medium mb-2">
-                                            Location
+                                            Localisation
                                         </label>
                                         <input
                                             type="text"
@@ -496,7 +502,7 @@ const GoogleCalendar = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-gray-700 text-sm font-medium mb-2">
-                                                New Start Date & Time
+                                            Nouvelle date et heure de début
                                             </label>
                                             <input
                                                 type="datetime-local"
@@ -507,7 +513,7 @@ const GoogleCalendar = () => {
                                         </div>
                                         <div>
                                             <label className="block text-gray-700 text-sm font-medium mb-2">
-                                                New End Date & Time
+                                            Nouvelle date et heure de fin
                                             </label>
                                             <input
                                                 type="datetime-local"
@@ -519,7 +525,7 @@ const GoogleCalendar = () => {
                                     </div>
                                     
                                     <div className="border border-gray-200 p-4 rounded-md">
-                                        <h3 className="font-semibold text-gray-700 mb-2">Attendees</h3>
+                                        <h3 className="font-semibold text-gray-700 mb-2">Participants</h3>
                                         <div className="flex mb-2">
                                             <input
                                                 type="email"
@@ -532,7 +538,7 @@ const GoogleCalendar = () => {
                                                 onClick={addEditAttendee}
                                                 className="bg-blue-500 text-white px-4 rounded-r-md hover:bg-blue-600 transition"
                                             >
-                                                Add
+                                                Ajouter 
                                             </button>
                                         </div>
                                         <div className="space-y-2">
@@ -555,20 +561,20 @@ const GoogleCalendar = () => {
                                             onClick={updateEvent}
                                             className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
                                         >
-                                            Save Changes
+                                            Enregistrer les modifications 
                                         </button>
                                         <button
                                             onClick={() => setEventToEdit(null)}
                                             className="flex-1 bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition"
                                         >
-                                            Cancel
+                                            Fermer 
                                         </button>
                                     </div>
                                 </div>
                             ) : loading ? (
-                                <p className="text-center text-gray-600">Loading events...</p>
+                                <p className="text-center text-gray-600">evenements en cours</p>
                             ) : events.length === 0 ? (
-                                <p className="text-center text-gray-600">No events found</p>
+                                <p className="text-center text-gray-600">Pas d'évenements trouvés</p>
                             ) : (
                                 <div className="space-y-4">
                                     {events.map((event) => (
@@ -579,7 +585,7 @@ const GoogleCalendar = () => {
                                             </p>
                                             {event.location && (
                                                 <p className="text-sm text-gray-600 mt-1">
-                                                    <span className="font-medium">Location:</span> {event.location}
+                                                    <span className="font-medium">Localisation:</span> {event.location}
                                                 </p>
                                             )}
                                             {event.description && (
@@ -595,7 +601,7 @@ const GoogleCalendar = () => {
                                                         rel="noopener noreferrer"
                                                         className="text-blue-600 hover:underline"
                                                     >
-                                                        Join Google Meet
+                                                        Rejoindre Google Meet
                                                     </a>
                                                 </p>
                                             )}
@@ -616,13 +622,13 @@ const GoogleCalendar = () => {
                                                     onClick={() => handleEditEvent(event)}
                                                     className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition"
                                                 >
-                                                    Edit
+                                                    Modifier
                                                 </button>
                                                 <button
                                                     onClick={() => deleteEvent(event.id)}
                                                     className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition"
                                                 >
-                                                    Delete
+                                                    Supprimer 
                                                 </button>
                                             </div>
                                         </div>
@@ -633,8 +639,12 @@ const GoogleCalendar = () => {
                     )}
                 </div>
             )}
+            
         </div>
+        
+        
     );
+    
 };
 
 export default GoogleCalendar;

@@ -1,44 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { getToken } from "../Security&Auth/authUtils"; // ajuste le chemin si nécessaire
 
 const Faqs = () => {
-  const [openIndex, setOpenIndex] = useState(null);   
+  const [faqs, setFaqs] = useState([]);
+  const [newFAQ, setNewFAQ] = useState({ question: "", answer: "" });
+  const [openIndex, setOpenIndex] = useState(null);
 
-  const faqData = [
-    { question: "Comment le médecin peut-il soulager votre douleur ?", answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    { question: "Comment puis-je me retirer d'un sujet ?", answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    { question: "Comprendre le médecin avant de regretter ?", answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    { question: "Quels types de systèmes supportez-vous ?", answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    { question: "Nous vous apprenons à vous sentir mieux ?", answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-    { question: "Comment puis-je vous contacter ?", answer: "Lorem Ipsum is simply dummy text of the printing and typesetting industry." },
-  ];
+  useEffect(() => {
+    const fetchFaqs = async () => {
+      try {
+        const token = getToken();
+        const response = await axios.get("/api/faqs/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFaqs(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des FAQ:", error);
+      }
+    };
+
+    fetchFaqs();
+  }, []);
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Questions Fréquentes</h2>
-      <div className="space-y-2">
-        {faqData.map((item, index) => (
-          <div key={index} className="border rounded-md">
-            <button
-              onClick={() => toggleAccordion(index)}
-              className={`w-full text-left p-4 text-lg font-semibold flex justify-between items-center 
-                          transition-all duration-300 rounded-md ${
-                            openIndex === index ? "bg-green-500 text-white" : "bg-green-300 text-black"
-                          } hover:bg-green-700`}
-            >
-              {item.question}
-              <span className="text-xl">{openIndex === index ? "▲" : "▼"}</span>
-            </button>
-            {openIndex === index && (
-              <div className="p-4 bg-gray-100 text-gray-700">
-                <p>{item.answer}</p>
-              </div>
-            )}
-          </div>
-        ))}
+    <div className="w-full bg-gray-50 py-12">
+      <div className="max-w-4xl mx-auto px-6">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">Questions Fréquentes</h2>
+        <div className="flex flex-col gap-3">
+          {faqs.map((item, index) => (
+            <div key={index} className="border border-gray-300 rounded-md overflow-hidden">
+              <button
+                className={`w-full px-4 py-4 text-sm font-semibold bg-[#2D3E50] text-white flex justify-between items-center cursor-pointer transition-colors duration-200 hover:bg-green-300 text-black ${
+                  openIndex === index ? "bg-green-300 text-black" : ""
+                }`}
+                onClick={() => toggleAccordion(index)}
+              >
+                <span>{item.question}</span>
+                <span className="text-xl">{openIndex === index ? "▲" : "▼"}</span>
+              </button>
+              {openIndex === index && (
+                <div className="bg-gray-100 p-4 text-gray-700">
+                  <p>{item.answer}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

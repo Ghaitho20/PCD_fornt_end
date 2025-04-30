@@ -19,15 +19,15 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[650px] overflow-hidden">
+    <div className="relative pt-20 w-full h-[650px] overflow-hidden ">
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out  ${
             index === current ? "opacity-100" : "opacity-0"
           }`}
         >
-          <video src={slide.video} autoPlay loop muted className="w-full h-full object-cover" />
+          <video src={slide.video} autoPlay loop muted className="w-full h-full object-cover pt-20" />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white">
             <h2 className="text-4xl font-bold uppercase">{slide.text}</h2>
           </div>
