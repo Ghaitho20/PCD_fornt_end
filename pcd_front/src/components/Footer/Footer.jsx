@@ -6,7 +6,7 @@ import logo from '../../assets/images/dashboard/logo3.png'
 const Footer = () => {
     return (
         <footer className="footer">
-            <div className="footer-container">
+            <div className="footer-container19 flex">
                 {/* Mission Section */}
                 <div className="footer-column mission">
                     <h3><img  className="logoStyle" src={logo}/> Marrow Transplant Center</h3>

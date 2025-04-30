@@ -5,11 +5,12 @@ import '../../assets/css/header/header.css';
 import logo from '../../assets/images/dashboard/logo3.png'
 import { FaPhone, FaEnvelope, FaFacebook, FaInstagram, FaLinkedin ,FaFacebookMessenger} from 'react-icons/fa';
 import { Dialog } from "@headlessui/react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { getUserName } from '../Security&Auth/authUtils';
 import React, { useEffect,useContext } from "react";
+
 
 
 
@@ -57,13 +58,14 @@ const Header1 = ({superUser,User}) => {
   const [user_name,setUser_name] = useState("");
 
   useEffect(() => {
-    const fetchName = async () => {
+    const fetchUserName = async () => {
+      // Assuming getUserName() is an async function
       const name = await getUserName();
       setUser_name(name);
-      console.log(name);
     };
-    fetchName();
+    fetchUserName();
   }, []);
+
 
   const handleDialogConn = ()=>{
       setIsOpen(!isOpen);
@@ -159,18 +161,18 @@ const Header1 = ({superUser,User}) => {
         </div>
       </div>
 
-        {(superUser || User) && (
-        <p className="text-xl font-semibold text-white bg-transparent from-indigo-500 to-purple-600 px-5 py-2 rounded-2xl shadow-md">
-            Bienvenu {user_name} 👋
-        </p>
-         )}
+      {(superUser || User) && (
+      <p className="text-xl font-semibold text-white bg-transparent from-indigo-500 to-purple-600 px-10 py-2 rounded-2xl shadow-md">
+        Bienvenu {user_name} 👋
+      </p>
+    )}
 
       {/* Center: Navigation Menu */}
       <nav className="nav-menu flex-grow flex justify-center">
         <ul className="nav-list flex gap-8">
           <li className="nav-item">
             <Link className="nav-link" to="/Homepage">
-              Homepage
+              Acceuil
             </Link>
           </li>
           <li className="nav-item">
@@ -179,21 +181,21 @@ const Header1 = ({superUser,User}) => {
             </Link>
           </li>
           <li className="nav-item dropdown-custom">
-            <span className="nav-link dropdown-toggle">Statistics</span>
+            <span className="nav-link dropdown-toggle">Statistique</span>
             <ul className="dropdown-menu-custom">
               <li>
                 <Link className="dropdown-item" to="/statistics/overview">
-                  Overview
+                Vue d'ensemble
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/statistics/diseases">
-                  Diseases Overview
+                Aperçu des maladies
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/statistics/hygiene">
-                  Hygiene
+                Hygiène
                 </Link>
               </li>
             </ul>
@@ -202,13 +204,13 @@ const Header1 = ({superUser,User}) => {
 
           { (superUser || User ) && (<li className="nav-item">
             <Link className="nav-link" to="/ai-recommendation">
-              AI Tools
+              Outils de Recommandation
             </Link>
           </li>)}
 
           {superUser && (<li className="nav-item">
             <Link className="nav-link" to="/Calendar">
-              Calendar
+              Calendrier
             </Link>
             </li>)}
 
@@ -219,22 +221,22 @@ const Header1 = ({superUser,User}) => {
             <ul className="dropdown-menu-custom">
               <li>
                 <Link className="dropdown-item" to="/edit/news">
-                  News
+                  Nouveautés
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/edit/stats">
-                  Statistics
+                  Statistiques
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/edit/diseases-overview">
-                  Diseases Overview
+                  les statistiques des maladies
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item" to="/edit/germs-overview">
-                  Germs Overview
+                  Les statistiques de germes
                 </Link>
               </li>
               <li>
@@ -250,7 +252,7 @@ const Header1 = ({superUser,User}) => {
             <li className="nav-item">
 
               <Link className="nav-link" to="/manage-accounts">
-                Manage accounts
+                Gérer les comptes 
 
 
               
@@ -316,7 +318,7 @@ const Header1 = ({superUser,User}) => {
           
 
                       <Link className="text-blue-600 text-sm" onClick={handleForgetPassword}>
-                      mot de passe oublié?
+                      mot de passe oublié ?
 
                       
                       </Link>
