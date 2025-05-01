@@ -4,65 +4,39 @@ import '../../assets/css/ai/rec.css';
 import ChatBot from '../ChatBot/ChatBot';
 import Footer from '../footer/footer';
 
+// Function to fetch recommendations from backend
+const fetchRecommendations = async (date, surface, service, chambre, element) => {
+  const response = await fetch('http://localhost:5000/predict', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ input: [date, surface, service, chambre, element] }),
+  });
 
-// Mock API function (to be replaced with real API call)
-const fetchRecommendations = async (service, surface) => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  const disinfectants = [
-    { name: 'Bleach', score: 0, quantity: 0 },
-    { name: 'Ethanol', score: 0, quantity: 0 },
-    { name: 'Isopropyl Alcohol', score: 0, quantity: 0 },
-    { name: 'Hydrogen Peroxide', score: 0, quantity: 0 },
-    { name: 'Quaternary Ammonium', score: 0, quantity: 0 },
-  ];
-
-  // Mock logic for scores and quantities
-  if (surface === 'Sink') {
-    disinfectants[0].score = service === 'A' ? 90 : service === 'B' ? 80 : 70;
-    disinfectants[0].quantity = 200;
-    disinfectants[1].score = service === 'A' ? 70 : service === 'B' ? 85 : 60;
-    disinfectants[1].quantity = 150;
-    disinfectants[2].score = service === 'A' ? 65 : service === 'B' ? 80 : 55;
-    disinfectants[2].quantity = 180;
-    disinfectants[3].score = service === 'A' ? 60 : service === 'B' ? 50 : 80;
-    disinfectants[3].quantity = 250;
-    disinfectants[4].score = service === 'A' ? 50 : service === 'B' ? 60 : 55;
-    disinfectants[4].quantity = 220;
-  } else if (surface === 'Floor') {
-    disinfectants[0].score = service === 'A' ? 80 : service === 'B' ? 90 : 85;
-    disinfectants[0].quantity = 1000;
-    disinfectants[1].score = service === 'A' ? 60 : service === 'B' ? 70 : 65;
-    disinfectants[1].quantity = 800;
-    disinfectants[2].score = service === 'A' ? 55 : service === 'B' ? 65 : 60;
-    disinfectants[2].quantity = 850;
-    disinfectants[3].score = service === 'A' ? 70 : service === 'B' ? 60 : 75;
-    disinfectants[3].quantity = 900;
-    disinfectants[4].score = service === 'A' ? 65 : service === 'B' ? 55 : 60;
-    disinfectants[4].quantity = 950;
-  } else if (surface === 'Air') {
-    disinfectants[0].score = service === 'A' ? 50 : service === 'B' ? 40 : 30;
-    disinfectants[0].quantity = 300;
-    disinfectants[1].score = service === 'A' ? 80 : service === 'B' ? 85 : 90;
-    disinfectants[1].quantity = 400;
-    disinfectants[2].score = service === 'A' ? 75 : service === 'B' ? 80 : 85;
-    disinfectants[2].quantity = 450;
-    disinfectants[3].score = service === 'A' ? 90 : service === 'B' ? 80 : 85;
-    disinfectants[3].quantity = 500;
-    disinfectants[4].score = service === 'A' ? 70 : service === 'B' ? 75 : 65;
-    disinfectants[4].quantity = 480;
+  if (!response.ok) {
+    throw new Error('Échec de la récupération des recommandations.');
   }
 
-  return disinfectants.sort((a, b) => b.score - a.score);
+  const data = await response.json();
+  return {
+    germs: Object.entries(data.germs).map(([name, count]) => ({ name, count })),
+    disinfectants: Object.entries(data.disinfectants).map(([name, volume]) => ({
+      name,
+      volume: Math.round(volume * 1000), // Scale to mL
+    })),
+  };
 };
 
 const AIRecommendation = () => {
   const [formData, setFormData] = useState({
-    service: 'A',
-    surface: 'Sink',
+    service: 'pédiatrie',
+    surface: 'surface',
+    chambre: 'cabine1',
+    element: 'chaise',
+    date: '',
   });
-  const [recommendations, setRecommendations] = useState([]);
+  const [results, setResults] = useState({ germs: [], disinfectants: [] });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -75,13 +49,31 @@ const AIRecommendation = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    setRecommendations([]);
+    setResults({ germs: [], disinfectants: [] });
 
     try {
-      const data = await fetchRecommendations(formData.service, formData.surface);
-      setRecommendations(data);
+      const data = await fetchRecommendations(
+        formData.date,
+        formData.surface,
+        formData.service,
+        formData.chambre,
+        formData.element
+      );
+
+      // Logging the recommendations for debugging/audit
+      console.group('AI Recommendations');
+      console.log('Input:', formData);
+      console.group('Germs Predicted');
+      data.germs.forEach((g) => console.log(`${g.name}: ${g.count.toFixed(2)}`));
+      console.groupEnd();
+      console.group('Disinfectants Recommended');
+      data.disinfectants.forEach((d) => console.log(`${d.name}: ${d.volume} mL`));
+      console.groupEnd();
+      console.groupEnd();
+
+      setResults(data);
     } catch (err) {
-      setError('Failed to fetch recommendations. Please try again.');
+      setError('Échec de la récupération des recommandations. Veuillez réessayer.');
     } finally {
       setIsLoading(false);
     }
@@ -89,72 +81,101 @@ const AIRecommendation = () => {
 
   return (
     <>
-    <div className="ai-recommendation-container">
-      <h2 className="ai-recommendation-title mt-[25px]">AI Disinfectant Recommendation</h2>
-      <div className="ai-recommendation-content">
-        <form className="ai-recommendation-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="service">Service:</label>
-            <select
-              id="service"
-              name="service"
-              value={formData.service}
-              onChange={handleInputChange}
-            >
-              <option value="A">Service A</option>
-              <option value="B">Service B</option>
-              <option value="C">Service C</option>
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="surface">Surface:</label>
-            <select
-              id="surface"
-              name="surface"
-              value={formData.surface}
-              onChange={handleInputChange}
-            >
-              <option value="Sink">Sink</option>
-              <option value="Floor">Floor</option>
-              <option value="Air">Air</option>
-            </select>
-          </div>
-          <button type="submit" className="recommend-button">
-            Get Recommendations
-          </button>
-        </form>
+      <div className="ai-recommendation-container">
+        <h2 className="ai-recommendation-title mt-[25px]">Recommandation de Désinfectant par IA</h2>
+        <div className="ai-recommendation-content">
+          <form className="ai-recommendation-form" onSubmit={handleSubmit}>
+            {/* Form Fields */}
+            <div className="form-group">
+              <label htmlFor="date">Date :</label>
+              <input type="date" id="date" name="date" value={formData.date} onChange={handleInputChange} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="surface">Surface :</label>
+              <select id="surface" name="surface" value={formData.surface} onChange={handleInputChange}>
+                <option value="surface" disabled>surface</option>
+                <option value="lavabo">lavabo</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="service">Service :</label>
+              <select id="service" name="service" value={formData.service} onChange={handleInputChange}>
+                <option value="pédiatrie">pédiatrie</option>
+                <option value="adulte">adulte</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="chambre">Chambre :</label>
+              <select id="chambre" name="chambre" value={formData.chambre} onChange={handleInputChange}>
+                {[
+                  'cabine1','cabine2','cabine3','cabine4','cabine5','cabine6','cabine7','cabine8','cabine9','cabine10','cabine11','cabine12',
+                  'chambre1','chambre2','chambre3','chambre4','chambre5','chambre8','chambre9','chambre10','chambre11','chambre12',
+                  'chambreabidjan','chambrebagdad','chambrecotono','chambredakar','chambrekhorthoume','chambrekods','chambrekonakri',
+                  'chambrelondon','chambrelyma','chambremoscou','chambreniami','chambreparis','chambrepikine','chambretrabelsi','chambretunis'
+                ].map((room) => <option key={room} value={room}>{room}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="element">Élément à nettoyer :</label>
+              <select id="element" name="element" value={formData.element} onChange={handleInputChange}>
+                {[
+                  'chaise','chaise percée','dessus éclairage','interphone','lavabo','lit','matelas','mur','oreiller',
+                  'poignée de porte','potence','table de lit','table de nuit','élément'
+                ].map((item) => <option key={item} value={item}>{item}</option>)}
+              </select>
+            </div>
 
-        {isLoading && (
-          <div className="loading-container">
-            <div className="spinner"></div>
-            <p className="loading-text">Generating Results...</p>
-          </div>
-        )}
+            <button type="submit" className="recommend-button" disabled={isLoading}>
+              {isLoading ? 'Chargement...' : 'Obtenir des recommandations'}
+            </button>
+          </form>
 
-        {error && <p className="error-message">{error}</p>}
+          {isLoading && (
+            <div className="loading-container">
+              <div className="spinner"></div>
+              <p className="loading-text">Génération des résultats...</p>
+            </div>
+          )}
 
-        {recommendations.length > 0 && !isLoading && (
-          <div className="recommendation-results">
-            <h3>Recommended Disinfectants</h3>
-            <ul className="disinfectant-list">
-              {recommendations.map((disinfectant, index) => (
-                <li key={disinfectant.name} className={`disinfectant-item rank-${index + 1}`}>
-                  <span className="rank-badge">{index + 1}</span>
-                  <div className="disinfectant-details">
-                    <span className="disinfectant-name">{disinfectant.name}</span>
-                    <span className="score">Effectiveness: {disinfectant.score}%</span>
-                    <span className="quantity">Quantity: {disinfectant.quantity} mL</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+          {error && <p className="error-message">{error}</p>}
+
+          {!isLoading && results.germs.length > 0 && (
+            <div className="germ-results">
+              <h3>Germes prédits</h3>
+              <ul className="germ-list">
+                {results.germs.map((germ, index) => (
+                  <li key={germ.name} className={`germ-item rank-${index + 1}`}>
+                    <span className="rank-badge">{index + 1}</span>
+                    <div className="germ-details">
+                      <span className="germ-name">{germ.name}</span>
+                      <span className="count">Compte : {germ.count.toFixed(2)}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {!isLoading && results.disinfectants.length > 0 && (
+            <div className="recommendation-results">
+              <h3>Désinfectants recommandés</h3>
+              <ul className="disinfectant-list">
+                {results.disinfectants.map((disinfectant, index) => (
+                  <li key={disinfectant.name} className={`disinfectant-item rank-${index + 1}`}>
+                    <span className="rank-badge">{index + 1}</span>
+                    <div className="disinfectant-details">
+                      <span className="disinfectant-name">{disinfectant.name}</span>
+                      <span className="volume">Volume : {disinfectant.volume} mL</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+        <ChatBot />
       </div>
-       <ChatBot/>
-       
-    </div>
-    <Footer/>
+      <Footer />
     </>
   );
 };

@@ -2,6 +2,7 @@
   import { FaTrash, FaUpload } from 'react-icons/fa';
   import axios from 'axios';
   import '../../../assets/css/Stats/editStatsPage/DiseaseEditor.css';
+  import { getToken } from '../../Security&Auth/authUtils';
 
   const getAuthHeaders = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -15,17 +16,25 @@
 
 
     useEffect(() => {
+      const token = getToken();
+  
       axios.get("http://localhost:8080/diseases", {
-          headers: getAuthHeaders(),
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
         })
         .then((response) => setDiseases(response.data))
         .catch((error) => console.error("Error fetching diseases:", error));
-        console.log("hello from ghaith")
+  
+      console.log("hello from ghaith");
     }, []);
 
     const handleInputChange = async (id, field, value) => {
       if (!id) return;
-
+    
+      const token = getToken();
+    
       try {
         const response = await axios.put(
           `http://localhost:8080/diseases/update/${id}/${field}`,
@@ -33,11 +42,11 @@
           {
             headers: {
               "Content-Type": "application/json",
-              ...getAuthHeaders(),
+              Authorization: token ? `Bearer ${token}` : "",
             },
           }
         );
-
+    
         if (response.status === 200) {
           setDiseases(
             diseases.map((disease) =>
@@ -70,8 +79,12 @@
 
         if (response.ok) {
           alert("Image uploaded successfully!");
+          const token = getToken();
           const updatedResponse = await axios.get("http://localhost:8080/diseases", {
-            headers: getAuthHeaders(),
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+              "Content-Type": "application/json",
+            },
           });
           setDiseases(updatedResponse.data);
         } else {
@@ -84,19 +97,25 @@
 
     const handleDelete = async (id) => {
       try {
+        const token = getToken();
+    
         const response = await fetch(`http://localhost:8080/diseases/delete/${id}`, {
           method: "DELETE",
-          headers: getAuthHeaders(),
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
         });
-
+    
         if (!response.ok) throw new Error("Failed to delete disease");
-
+    
         setDiseases(diseases.filter((disease) => disease.id !== id));
       } catch (error) {
         console.error("Delete error:", error);
         alert("Something went wrong while deleting.");
       }
     };
+    
 
     const handleAddDisease = async () => {
       try {
@@ -105,18 +124,20 @@
           description: "",
           image: null,
         };
-
+    
+        const token = getToken();
+    
         const response = await axios.post(
           "http://localhost:8080/diseases/add",
           newDisease,
           {
             headers: {
               "Content-Type": "application/json",
-              ...getAuthHeaders(),
+              Authorization: token ? `Bearer ${token}` : "",
             },
           }
         );
-
+    
         if (response.status === 200 && response.data) {
           setDiseases([...diseases, response.data]);
         } else {
