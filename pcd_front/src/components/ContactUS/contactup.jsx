@@ -70,7 +70,7 @@ const ContactForm = () => {
         
         <div className="p-4 pt-20 w-full">
           <br/><br/><br/><br/><br/>
-          <h1 className="text-4xl font-bold text-center text-[#333D79] mb-8">Contact Nous</h1>
+          <h1 className="text-4xl font-bold text-center text-[#333D79] mb-8">Contactez-Nous</h1>
           <div className="bg-green bg-opacity-90 shadow-lg rounded-lg p-8 max-w-4xl mx-auto flex flex-col md:flex-row">
             <div className="w-full md:w-2/3 pr-4 pt-20">
               <form onSubmit={handleSubmit}>
