@@ -118,7 +118,13 @@ const ALL = () => {
               <GoogleCalendar/>
           </RoleProtectedRoute>
         } />
-        <Route path="/contactUS" element={<ContactUS />} />
+        <Route path="/contactUS"
+        element={
+            <RoleProtectedRoute allowedRoles={['VISITOR']}>
+              <ContactUS />
+            </RoleProtectedRoute>
+          }
+        />
 
         
         <Route path="/Brochure" element={<Brochure />} />

@@ -180,11 +180,16 @@ const Header1 = ({superUser,User}) => {
                 Brochure
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/contactUS">
+
+          { (!superUser && !User) && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/contactUS">
                 Contactez-nous
-            </Link>
-          </li>
+              </Link>
+            </li>
+          )}
+
+
           <li className="nav-item dropdown-custom">
             <span className="nav-link dropdown-toggle">Statistique</span>
             <ul className="dropdown-menu-custom">
@@ -207,7 +212,7 @@ const Header1 = ({superUser,User}) => {
           </li>
 
 
-          { (superUser || User ) && (<li className="nav-item">
+          { (superUser || User) && (<li className="nav-item">
             <Link className="nav-link" to="/ai-recommendation">
               Outils de Recommandation
             </Link>
