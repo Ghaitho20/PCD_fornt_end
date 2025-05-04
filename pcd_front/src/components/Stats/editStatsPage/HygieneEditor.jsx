@@ -4,38 +4,36 @@ import axios from 'axios';
 import '../../../assets/css/Stats/editStatsPage/DiseaseEditor.css';
 import { getToken } from '../../Security&Auth/authUtils';
 
-const API_BASE = "http://localhost:8080/germs";
+const getAuthHeaders = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user?.token;
+  return { Authorization: `Bearer ${token}` };
+};
 
 const GermEditor = () => {
-  const [germs, setGerms] = useState([]);
+  const [diseases, setDiseases] = useState([]);
 
-  // Fetch germs on mount
   useEffect(() => {
-    fetchGerms();
+    const token = getToken();
+
+    axios.get("http://localhost:8080/germs", {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => setDiseases(response.data))
+    .catch((error) => console.error("Erreur lors de la récupération des germes :", error));
   }, []);
 
-  const fetchGerms = async () => {
-    const token = getToken();
-    try {
-      const response = await axios.get(API_BASE, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-          "Content-Type": "application/json",
-        },
-      });
-      setGerms(response.data);
-    } catch (error) {
-      console.error("Error fetching germs:", error);
-    }
-  };
-
-  const updateGermField = async (id, field, value) => {
+  const handleInputChange = async (id, field, value) => {
     if (!id) return;
 
     const token = getToken();
+
     try {
       const response = await axios.put(
-        `${API_BASE}/update/${id}/${field}`,
+        `http://localhost:8080/germs/update/${id}/${field}`,
         value,
         {
           headers: {
@@ -46,50 +44,58 @@ const GermEditor = () => {
       );
 
       if (response.status === 200) {
-        setGerms(prev =>
-          prev.map(germ =>
-            germ.id === id ? { ...germ, [field]: value } : germ
+        setDiseases(prev =>
+          prev.map((disease) =>
+            disease.id === id ? { ...disease, [field]: value } : disease
           )
         );
       }
     } catch (error) {
-      console.error("Update error:", error.message);
-      alert("Error updating germ: " + error.message);
+      console.error("Erreur de mise à jour :", error.message);
+      alert("Une erreur est survenue lors de la mise à jour : " + error.message);
     }
   };
 
-  const handleImageUpload = async (germId, e) => {
+  const handleImageUpload = async (diseaseId, e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const formData = new FormData();
     formData.append("image", file);
 
-    const token = getToken();
     try {
-      const response = await fetch(`${API_BASE}/update/image/${germId}`, {
-        method: "PUT",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `http://localhost:8080/germs/update/image/${diseaseId}`,
+        {
+          method: "PUT",
+          headers: getAuthHeaders(),
+          body: formData,
+        }
+      );
 
       if (response.ok) {
-        alert("Image uploaded successfully!");
-        fetchGerms(); // refresh data
+        alert("Image téléchargée avec succès !");
+        const token = getToken();
+        const updatedResponse = await axios.get("http://localhost:8080/germs", {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+            "Content-Type": "application/json",
+          },
+        });
+        setDiseases(updatedResponse.data);
       } else {
-        alert("Image upload failed.");
+        alert("Échec du téléchargement de l'image.");
       }
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("Erreur lors du téléchargement de l'image :", error);
     }
   };
 
-  const deleteGerm = async (id) => {
-    const token = getToken();
+  const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${API_BASE}/delete/${id}`, {
+      const token = getToken();
+
+      const response = await fetch(`http://localhost:8080/germs/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
@@ -97,59 +103,64 @@ const GermEditor = () => {
         },
       });
 
-      if (!response.ok) throw new Error("Failed to delete germ");
+      if (!response.ok) throw new Error("Échec de la suppression de la maladie.");
 
-      setGerms(prev => prev.filter(germ => germ.id !== id));
+      setDiseases(prev => prev.filter((disease) => disease.id !== id));
     } catch (error) {
-      console.error("Delete error:", error);
-      alert("Something went wrong while deleting.");
+      console.error("Erreur de suppression :", error);
+      alert("Une erreur est survenue lors de la suppression.");
     }
   };
 
-  const addGerm = async () => {
-    const token = getToken();
-    const newGerm = {
-      name: "",
-      description: "",
-      image: null,
-    };
-
+  const handleAddDisease = async () => {
     try {
-      const response = await axios.post(`${API_BASE}/add`, newGerm, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
+      const newDisease = {
+        name: "",
+        description: "",
+        image: null,
+      };
+
+      const token = getToken();
+
+      const response = await axios.post(
+        "http://localhost:8080/germs/add",
+        newDisease,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
 
       if (response.status === 200 && response.data) {
-        setGerms(prev => [...prev, response.data]);
+        setDiseases(prev => [...prev, response.data]);
       } else {
-        throw new Error("Failed to add germ");
+        throw new Error("Échec de l'ajout du germe.");
       }
     } catch (error) {
-      console.error("Add germ error:", error.message);
-      alert("Error adding new germ: " + error.message);
+      console.error("Erreur d'ajout :", error.message);
+      alert("Une erreur est survenue lors de l'ajout du nouvel germe : " + error.message);
     }
   };
 
   return (
     <div className="disease-editor">
-      <h1 className="mt-[250px]">Edit Germs</h1>
+      <h1 className='mt-[135px]'>Éditeur de Germes</h1>
 
-      {germs.map((germ) => (
-        <div key={germ.id} className="disease-container">
+      {diseases.map((disease) => (
+        <div key={disease.id} className="disease-container">
           <div className="image-section">
-            <img
-              src={germ.image ? `data:image/jpeg;base64,${germ.image}` : ''}
-              alt={germ.name || 'Germ'}
+            <img 
+              src={disease.image ? `data:image/jpeg;base64,${disease.image}` : ''} 
+              alt={disease.name} 
             />
             <label className="upload-button">
-              <FaUpload /> Upload New
+              <FaUpload /> Télécharger une nouvelle image
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) => handleImageUpload(germ.id, e)}
+                onChange={(e) => handleImageUpload(disease.id, e)}
                 style={{ display: 'none' }}
               />
             </label>
@@ -158,32 +169,31 @@ const GermEditor = () => {
           <div className="input-section">
             <input
               type="text"
-              value={germ.name || ''}
-              onChange={(e) => updateGermField(germ.id, 'name', e.target.value)}
-              placeholder="Germ Name"
+              value={disease.name || ''}
+              onChange={(e) => handleInputChange(disease.id, 'name', e.target.value)}
+              placeholder="Nom du germe"
             />
             <textarea
-              value={germ.description || ''}
-              onChange={(e) => updateGermField(germ.id, 'description', e.target.value)}
-              placeholder="Germ Description"
+              value={disease.description || ''}
+              onChange={(e) => handleInputChange(disease.id, 'description', e.target.value)}
+              placeholder="Description du germe"
             />
           </div>
 
-          <button className="delete-button" onClick={() => deleteGerm(germ.id)}>
+          <button
+            className="delete-button"
+            onClick={() => handleDelete(disease.id)}
+          >
             <FaTrash />
           </button>
         </div>
       ))}
 
-       
-        <div className="update-section">
-          
-          <button onClick={addGerm} className="add-button">
-            Add new Germ
-          </button>
-        </div>
-      
-      
+      <div className="update-section">
+        <button onClick={handleAddDisease} className="add-button">
+          Ajouter une nouvelle germe
+        </button>
+      </div>
     </div>
   );
 };
