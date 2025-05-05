@@ -37,7 +37,7 @@ const EditStatisticsPage = () => {
         return <EditParagraphActPha/>
       
       default:
-        return <p>Please select a statistic to edit.</p>;
+        return <p>Veuillez sélectionner une statistique à modifier</p>;
     }
   };
 
@@ -48,15 +48,17 @@ const EditStatisticsPage = () => {
       <div className="select-container">
         <label htmlFor="stat-select">Select the statistic to update:</label>
         <select id="stat-select" value={selectedOption} onChange={handleSelectChange}>
-          <option value="">-- Choose an option --</option>
-          <option value="general">General Stats</option>
-          <option value="graftSurvival">Graft Survival Rates</option>
-          <option value="patientDemographics">Patient Demographics</option>
-          <option value="staffPatientStats">Staff and Patients Stats</option>
-          <option value="transplantActivity">Transplant Activity Throughout the Years</option>
-          <option value="transplantDiseases">Diseases Covered by Transplantation</option>
-          <option value="EditStatisticsPage">Pharmacy Activity Paragraph</option>
+          <option value="">-- Choisissez une option --</option>
+          <option value="general">Statistiques générales</option>
+          <option value="graftSurvival">Taux de survie du greffon</option>
+          <option value="patientDemographics">Données démographiques des patients</option>
+          <option value="staffPatientStats">Statistiques du personnel et des patients</option>
+          <option value="transplantActivity">Activité de transplantation au fil des années</option>
+          <option value="transplantDiseases">Maladies couvertes par la transplantation</option>
+          <option value="EditStatisticsPage">Paragraphe sur l'activité pharmaceutique</option>
+            
         </select>
+
       </div>
       <div className="component-container">
         {renderComponent()}

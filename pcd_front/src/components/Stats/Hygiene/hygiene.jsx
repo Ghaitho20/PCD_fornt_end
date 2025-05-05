@@ -1,35 +1,50 @@
-import React, { useState, useEffect } from 'react'; // Added useEffect import
-import axios from 'axios'; // Added axios import
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import "../../../assets/css/Stats/DiseaseOverview/diseaseOverview.css";
 import SelectionBar from "./selectionBar";
 import Footer from '../../footer/footer';
 import ChatBot from "../../ChatBot/ChatBot";
 
+// ✅ Import du token
+import { getToken } from "../../Security&Auth/authUtils"; // Assure-toi que ce chemin est correct
 
 const Hygiene = () => {
+  const [Germs, setGerms] = useState([]);
 
+  useEffect(() => {
+    const fetchGerms = async () => {
+      try {
+        const token = getToken(); // ✅ Récupération du token
 
-    const [Germs, setGerms] = useState([]);
-      
-    // Fetch germs on component mount
-    useEffect(() => {
-      axios.get("http://localhost:8080/germs")
-        .then(response => setGerms(response.data))
-        .catch(error => console.error("Error fetching germs:", error));
-  
-    }, []);
-  
+        const response = await axios.get("http://localhost:8080/germs", {
+          headers: {
+            Authorization: `Bearer ${token}` // ✅ Envoi du token dans les headers
+          }
+        });
+
+        setGerms(response.data);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des germes :", error);
+      }
+    };
+
+    fetchGerms();
+  }, []);
 
   return (
     <div className="disease-overview-container ">
-        <div className="selectionBar-class mt-[150px]">
-            <div className="section-title">Visualize Germs and Disinfectants charts</div>
-            <SelectionBar/>
+      <div className="selectionBar-class mt-[150px]">
+        <div className="section-title">
+          Visualiser les graphiques des germes et des désinfectants
         </div>
-      <h1 className="section-title">Germs Overview</h1>
+        <SelectionBar />
+      </div>
+
+      <h1 className="section-title">Aperçu des germes</h1>
       <p className="section-subtitle">
-        Explore the different germs encountered at the Marrow Transplant Center.
+        Explorer les différents germes rencontrés au Centre de transplantation de moelle osseuse.
       </p>
+
       {Germs.map((germ, index) => (
         <div
           key={index}
@@ -38,9 +53,9 @@ const Hygiene = () => {
         >
           <div className="disease-content">
             <img
-            src={`data:image/png;base64,${germ.image}`}
-            alt={`${germ.name} illustration`}
-            className="disease-image"
+              src={`data:image/png;base64,${germ.image}`}
+              alt={`${germ.name} illustration`}
+              className="disease-image"
             />
             <div className="disease-info">
               <h2 className="disease-name">{germ.name}</h2>
@@ -49,8 +64,9 @@ const Hygiene = () => {
           </div>
         </div>
       ))}
-       <ChatBot/>
-      <Footer/>
+
+      <ChatBot />
+      <Footer />
     </div>
   );
 };

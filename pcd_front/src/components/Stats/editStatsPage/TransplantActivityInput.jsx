@@ -2,50 +2,63 @@ import React, { useState } from 'react';
 import { FaCalendarAlt, FaSyringe } from 'react-icons/fa';
 import '../../../assets/css/Stats/editStatsPage/TransplantActivityInput.css';
 
+// ✅ Import du token
+import { getToken } from '../../Security&Auth/authUtils'; // Vérifie que le chemin est correct
+
 const TransplantActivityInput = ({ onSubmit }) => {
-  // State for input fields
   const [year, setYear] = useState('');
   const [autografts, setAutografts] = useState('');
   const [allografts, setAllografts] = useState('');
-  
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    try{
-      e.preventDefault();
 
-      // Parse inputs to integers, defaulting to 0 if empty
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
       const parsedYear = Math.floor(parseFloat(year) || 0);
       const parsedAutografts = Math.floor(parseFloat(autografts) || 0);
       const parsedAllografts = Math.floor(parseFloat(allografts) || 0);
 
-      // Validate inputs
-      if (isNaN(parsedYear) || isNaN(parsedAutografts) || isNaN(parsedAllografts)) {
+      if (
+        isNaN(parsedYear) ||
+        isNaN(parsedAutografts) ||
+        isNaN(parsedAllografts)
+      ) {
         alert('Please enter valid numbers for all fields.');
         return;
       }
-      
-      const response = await fetch("http://localhost:8080/TransAct",
-        {
-          method: 'PUT',
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify(
-            {
-              "year": year,
-              "nbAllographs": allografts,
-              "nbAutographs": autografts
-            }
-          )
-        }
-      )
 
-      if (!response.ok){throw new Error(response.statusText);}
-      alert("Submission is done successfully !");
+      const token = getToken(); // ✅ Récupération du token
+
+      const response = await fetch('http://localhost:8080/TransAct', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}` // ✅ Envoi du token ici
+        },
+        body: JSON.stringify({
+          year: parsedYear,
+          nbAllographs: parsedAllografts,
+          nbAutographs: parsedAutografts
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      }
+
+      alert('Submission is done successfully !');
       setYear('');
       setAutografts('');
-      setAllografts(''); 
-  }catch(err){
-    console.log(err.message);  
-  }
+      setAllografts('');
+
+      if (onSubmit) {
+        onSubmit(); // facultatif, peut rafraîchir les stats parent
+      }
+
+    } catch (err) {
+      console.error('Submission error:', err.message);
+      alert('Une erreur est survenue lors de la soumission.');
+    }
   };
 
   return (

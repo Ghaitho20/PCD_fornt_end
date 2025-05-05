@@ -33,28 +33,29 @@ const EditStatistics = () => {
 
   return (
     <div className="edit-statistics">
-      <h2>Edit Success Statistics</h2>
+      <h2>Modifier les statistiques de réussite</h2>
       <form onSubmit={handleSubmit}>
         {/* Disease selection */}
         <div className="form-group">
-          <label htmlFor="disease">Disease:</label>
+          <label htmlFor="disease">Maladie :</label>
           <select
             id="disease"
             value={disease}
             onChange={(e) => setDisease(e.target.value)}
           >
-            <option value="">Select a disease</option>
-            <option value="aplasie medullaire">Aplasie Medullaire</option>
-            <option value="lymphoma">Lymphoma</option>
-            <option value="leucémie aigue">Leucémie Aigue</option>
-            <option value="other">Other</option>
+              <option value="">Sélectionnez une maladie</option>
+              <option value="aplasie_medullaire">Aplasie médullaire</option>
+              <option value="lymphome">Lymphome</option>
+              <option value="leucemie_aigue">Leucémie aiguë</option>
+              <option value="autre">Autre</option>
+
           </select>
         </div>
 
         {/* Custom disease input (appears if "Other" is selected) */}
         {disease === 'other' && (
           <div className="form-group">
-            <label htmlFor="custom-disease">Custom Disease:</label>
+            <label htmlFor="custom-disease">Maladie personnalisée :</label>
             <input
               type="text"
               id="custom-disease"
@@ -67,7 +68,7 @@ const EditStatistics = () => {
 
         {/* Success rate input */}
         <div className="form-group">
-          <label htmlFor="success-rate">Success Rate (%):</label>
+          <label htmlFor="success-rate">Taux de réussite (%) :</label>
           <input
             type="number"
             id="success-rate"
@@ -80,7 +81,7 @@ const EditStatistics = () => {
         </div>
 
         {/* Submit button */}
-        <button className='editStatistics-button' type="submit">Update Statistics</button>
+        <button className='editStatistics-button' type="submit">Mettre à jour les statistiques</button>
       </form>
     </div>
   );

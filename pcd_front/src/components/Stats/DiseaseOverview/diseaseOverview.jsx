@@ -33,10 +33,11 @@ const DiseaseOverview = () => {
   return (
     <div className="disease-overview-container ">
       
-      <h1 className="section-title mt-[150px]">Disease Overview</h1>
+      <h1 className="section-title mt-[150px]">Aperçu des Maladies</h1>
       <p className="section-subtitle">
-        Explore the conditions we treat at the Marrow Transplant Center.
+        Explorez les pathologies que nous traitons au Centre de Transplantation de Moelle Osseuse.
       </p>
+
       {diseases.map((disease, index) => (
         <div
           key={index}

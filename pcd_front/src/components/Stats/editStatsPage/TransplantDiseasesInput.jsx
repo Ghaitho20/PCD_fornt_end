@@ -1,102 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import '../../../assets/css/Stats/editStatsPage/TransplantDiseasesInput.css';
+import { getToken } from '../../Security&Auth/authUtils'; // Ajuste le chemin selon ta structure
 
 const TransplantDiseasesInput = ({ onSubmit }) => {
   const [diseasesList, setDiseasesList] = useState([]);
   const [totalPercentage, setTotalPercentage] = useState(0);
   const [error, setError] = useState('');
   const [disease, setDisease] = useState({
-    "disease": "",
-    "acronym": "",
-    "percentage": 0
+    disease: "",
+    acronym: "",
+    percentage: 0
   });
 
-
   useEffect(() => {
-    console.log("diseases List After Addition / Removal : ", diseasesList);
+    console.log("Diseases List After Addition / Removal:", diseasesList);
   }, [diseasesList]);
 
   const handleDisease = (field, value) => {
-    setDisease((prev) => (
-      {...prev,
-        [field]: value
-      }
-    ))
-  }
+    setDisease((prev) => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
   const handleAdd = () => {
-
-    // Validate and parse the percentage
     const perc = parseFloat(disease.percentage);
     if (isNaN(perc) || perc <= 0 || perc > 100) {
       setError('Please enter a valid percentage between 0 and 100');
       return;
     }
 
-    // Check if adding this percentage would exceed 100%
     if (totalPercentage + perc > 100) {
       setError('Adding this percentage would make the total exceed 100%');
-      disease.percentage=0;
       return;
     }
-    console.log("Added disease : ", disease);
-    setDiseasesList([... diseasesList, disease]); 
-    setTotalPercentage(totalPercentage+perc);
-    setDisease({
-      "disease": "",
-      "acronym": "",
-      "percentage": 0
-    })
-    setError('');
-    
-  }
 
-  const handleRemove = (index) => {
-    // Remove the disease at the specified index
-    console.log("removed disease : ", diseasesList[index]);
-    setDiseasesList(diseasesList.filter((_, i) => i !== index));
-    setTotalPercentage(totalPercentage - diseasesList[index].percentage);
-    
-    
-    
+    setDiseasesList([...diseasesList, { ...disease, percentage: perc }]);
+    setTotalPercentage(totalPercentage + perc);
+    setDisease({ disease: "", acronym: "", percentage: 0 });
+    setError('');
   };
 
-  const handleSubmit= async () => {
+  const handleRemove = (index) => {
+    const removed = diseasesList[index];
+    setDiseasesList(diseasesList.filter((_, i) => i !== index));
+    setTotalPercentage(totalPercentage - removed.percentage);
+  };
 
-    if (totalPercentage!= 100) {alert("The total Percentage is less than 100. Try adding more entries !");}
-    else{
-
-    try{
-        const response = await fetch("http://localhost:8080/MaladiePriseEnCharge/batch",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(diseasesList)
-          }
-        )
-        if (!response.ok)
-        {
-          throw new Error(response.statusText); 
-        }
-        console.log("the posted diseases List", diseasesList);
-        setDisease({
-          "disease": "",
-          "acronym": "",
-          "percentage": 0
-        });
-        setDiseasesList([]);
-        setTotalPercentage(0);
-        alert("Submission done with success!")
-    }catch(err){
-      console.log(err.message);
-      alert("Errors. You might have duplicates. Keep one instance only.");
+  const handleSubmit = async () => {
+    if (totalPercentage !== 100) {
+      alert("The total percentage must be exactly 100%.");
+      return;
     }
-    
-  }
-}
 
+    try {
+      const token = getToken();
+      if (!token) throw new Error("Token manquant. Veuillez vous reconnecter.");
+
+      const response = await fetch("http://localhost:8080/MaladiePriseEnCharge/batch", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(diseasesList),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la soumission des données.");
+      }
+
+      alert("Submission done with success!");
+      setDiseasesList([]);
+      setTotalPercentage(0);
+      setDisease({ disease: "", acronym: "", percentage: 0 });
+      if (onSubmit) onSubmit();
+
+    } catch (err) {
+      console.error(err.message);
+      alert("Erreur : " + err.message + ". Vous avez peut-être des doublons.");
+    }
+  };
 
   return (
     <div className="transplant-diseases-input">
@@ -104,12 +88,12 @@ const TransplantDiseasesInput = ({ onSubmit }) => {
 
       <div className="form-group">
         <label>Disease:</label>
-          <input
-            type="text"
-            value={disease.disease}
-            onChange={(e) => handleDisease("disease", e.target.value)}
-            placeholder="Enter disease name"
-          />
+        <input
+          type="text"
+          value={disease.disease}
+          onChange={(e) => handleDisease("disease", e.target.value)}
+          placeholder="Enter disease name"
+        />
       </div>
 
       <div className="form-group">
@@ -118,10 +102,10 @@ const TransplantDiseasesInput = ({ onSubmit }) => {
           type="text"
           value={disease.acronym}
           onChange={(e) => handleDisease("acronym", e.target.value)}
-          placeholder="Enter disease Acronym"
+          placeholder="Enter disease acronym"
         />
       </div>
-    
+
       <div className="form-group">
         <label>Percentage:</label>
         <input
@@ -137,22 +121,29 @@ const TransplantDiseasesInput = ({ onSubmit }) => {
 
       {error && <p className="error">{error}</p>}
 
-      <button  className= 'my-button-transplantDiseaseInput'onClick={handleAdd}>Add Disease</button>
+      <button className="my-button-transplantDiseaseInput" onClick={handleAdd}>
+        Add Disease
+      </button>
 
       <div className="diseases-list">
         {diseasesList.map((d, index) => (
           <div key={index} className="disease-item">
-            <span>
-              {d.disease}: {d.acronym}: {d.percentage}%
-            </span>
-            <button  className= 'my-button-transplantDiseaseInput' onClick={() => handleRemove(index)}>Remove</button>
+            <span>{d.disease}: {d.acronym}: {d.percentage}%</span>
+            <button
+              className="my-button-transplantDiseaseInput"
+              onClick={() => handleRemove(index)}
+            >
+              Remove
+            </button>
           </div>
         ))}
       </div>
 
       <p>Total Percentage: {totalPercentage.toFixed(2)}%</p>
 
-      <button className= 'my-button-transplantDiseaseInput' onClick={handleSubmit}>Submit</button>
+      <button className="my-button-transplantDiseaseInput" onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
 };

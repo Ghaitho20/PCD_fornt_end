@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart as RechartsPieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { getToken } from "../../Security&Auth/authUtils"; // Import your token utility
 import styles from '../../../assets/css/Stats/Overview/MaladPriseEnCharge.module.css';
 
 const PieChart = ({ data, colors }) => {
-  // Update renderLabel to use acronym and percent
   const renderLabel = ({ acronym, percentage }) => `${acronym} (${percentage}%)`;
 
   return (
@@ -12,7 +12,7 @@ const PieChart = ({ data, colors }) => {
         <Pie
           data={data}
           dataKey="percentage"
-          nameKey="acronym" // Use acronym for the pie slice labels
+          nameKey="acronym"
           cx="50%"
           cy="50%"
           outerRadius={120}
@@ -58,31 +58,40 @@ export const MaladiePriseEnCharge = () => {
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
 
-  // Fetch the data from API
   useEffect(() => {
     const getData1 = async () => {
       try {
-        const response = await fetch('http://localhost:8080/MaladiePriseEnCharge', { method: 'GET' });
+        const token = getToken(); // Get the token from localStorage through the utility function
+        if (!token) {
+          console.log("No token found, please log in.");
+          return;
+        }
+
+        const response = await fetch('http://localhost:8080/MaladiePriseEnCharge', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`, // Send the token in the Authorization header
+            'Content-Type': 'application/json',
+          },
+        });
+
         if (!response.ok) {
           throw new Error(response.statusText);
         }
+
         const data = await response.json();
         console.log('Retrieved Data from API', data);
-        setData1(data); // Corrected to setData1
+        setData1(data);
       } catch (err) {
-        console.log(err.message);
+        console.log('Error fetching data:', err.message);
       }
     };
     getData1();
   }, []);
 
-  // Generate a random color
-  const generateRandomColor = () => {
-    const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-    return randomColor;
-  };
+  // Generate random colors for the pie chart
+  const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
-  // Generate colors based on the data length
   const COLORS1 = data1.length ? Array.from({ length: data1.length }, () => generateRandomColor()) : [];
   const COLORS2 = data1.length ? Array.from({ length: data1.length }, () => generateRandomColor()) : [];
 

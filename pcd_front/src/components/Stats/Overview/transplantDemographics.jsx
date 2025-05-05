@@ -53,7 +53,7 @@ const TransplantDemographicsChart = () => {
       legend: { position: 'top', labels: { color: '#333', font: { size: 14 } } },
       title: {
         display: true,
-        text: 'Age Distribution and Limits for Transplants',
+        text: 'Répartition par âge et leur limites pour les transplantations',
         color: '#2c3e50',
         font: { size: 18, weight: 'bold' },
       },
@@ -79,7 +79,7 @@ const TransplantDemographicsChart = () => {
       legend: { position: 'right', labels: { color: '#333', font: { size: 14 } } },
       title: {
         display: true,
-        text: 'Sex Ratio and Age Distribution (Allografts)',
+        text: 'Ratio hommes-femmes et répartition par âge (Allogreffes)',
         color: '#2c3e50',
         font: { size: 18, weight: 'bold' },
       },
@@ -89,11 +89,7 @@ const TransplantDemographicsChart = () => {
   return (
     <div className="transplantChartContainer">
       <div style={{fontFamily: "Roboto", fontSize: "18px", flex: "0.3", padding: "10px 20px"}}>
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-       totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
-       Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
-       sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."" 
-       
+      La distribution des âges des patients dans un centre de greffe de moelle osseuse reflète généralement une grande hétérogénéité, allant des enfants aux personnes âgées. Toutefois, la majorité des greffes sont réalisées chez des adultes jeunes à d’âge moyen, souvent entre 20 et 60 ans, en raison de la meilleure tolérance aux traitements intensifs requis et des indications médicales spécifiques à certaines hémopathies malignes ou non malignes. Les greffes pédiatriques, bien que moins fréquentes en nombre absolu, représentent une part significative en raison de maladies congénitales ou héréditaires, comme les déficits immunitaires ou les anémies sévères.
       </div>
       <div className="chartSection">
         <div className="barChartWrapper">
