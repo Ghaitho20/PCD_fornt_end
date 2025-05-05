@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import '../../../assets/css/Stats/Hygiene/selectionBarEditor.css';
+import { getToken } from '../../Security&Auth/authUtils'; // Adjust path if needed
 
 const DisinfectantEditor = () => {
-  // State declarations with consistent naming
   const [entries, setEntries] = useState([]);
   const [formData, setFormData] = useState({
     disinfectant: '',
@@ -15,14 +15,15 @@ const DisinfectantEditor = () => {
   });
   const [deleteYear, setDeleteYear] = useState('');
 
-  // Static disinfectant options (could be fetched from API)
   const disinfectantOptions = ['Bleach', 'Alcohol', 'Hydrogen Peroxide'];
 
-  // Fetch entries on component mount
   useEffect(() => {
     const fetchEntries = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/disinfectants');
+        const token = getToken();
+        const response = await axios.get('http://localhost:8080/disinfectants', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setEntries(response.data);
       } catch (error) {
         console.error('Error fetching disinfectants:', error);
@@ -31,13 +32,11 @@ const DisinfectantEditor = () => {
     fetchEntries();
   }, []);
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleAdd = async () => {
     const { disinfectant, service, surface, quantity, year } = formData;
     
@@ -55,7 +54,10 @@ const DisinfectantEditor = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/utilizations/add', newEntry);
+      const token = getToken();
+      const response = await axios.post('http://localhost:8080/utilizations/add', newEntry, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setEntries((prev) => [...prev, response.data]);
       setFormData({ disinfectant: '', service: '', surface: '', quantity: '', year: '' });
       alert('Entry added successfully!');
@@ -65,7 +67,6 @@ const DisinfectantEditor = () => {
     }
   };
 
-  // Handle deletion
   const handleDelete = async () => {
     if (!deleteYear) {
       alert('Please select a year to delete.');
@@ -73,7 +74,10 @@ const DisinfectantEditor = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:8080/utilizations/delete/${deleteYear}`);
+      const token = getToken();
+      await axios.delete(`http://localhost:8080/utilizations/delete/${deleteYear}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setEntries((prev) => prev.filter((entry) => entry.year !== parseInt(deleteYear)));
       setDeleteYear('');
       alert('Entry deleted successfully!');
@@ -83,7 +87,6 @@ const DisinfectantEditor = () => {
     }
   };
 
-  // Generate year options
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 10 }, (_, i) => currentYear - i);
 
@@ -101,8 +104,6 @@ const DisinfectantEditor = () => {
           placeholder="Enter Disinfectant"
           className="input-field"
         />
-
-        
 
         <input
           type="text"
@@ -154,10 +155,9 @@ const DisinfectantEditor = () => {
 
       {/* Delete Section */}
       <div className="delete-section">
-      <select
-          name="year"
-          value={formData.year}
-          onChange={handleInputChange}
+        <select
+          value={deleteYear}
+          onChange={(e) => setDeleteYear(e.target.value)}
           className="input-field"
         >
           <option value="">Select Year to delete</option>
@@ -178,8 +178,8 @@ const DisinfectantEditor = () => {
         {entries.length === 0 ? (
           <p className="no-entries">No entries found.</p>
         ) : (
-          entries.map((entry) => (
-            <div key={entry.year} className="entry-item">
+          entries.map((entry, index) => (
+            <div key={index} className="entry-item">
               <span>
                 {entry.disinfectant} - {entry.service && `${entry.service} - `}
                 {entry.surface && `${entry.surface} - `}

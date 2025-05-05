@@ -9,6 +9,7 @@ import '../../../assets/css/Stats/editStatsPage/EditStatisticsPage.css';
 import Footer from '../../footer/footer';
 import ChatBot from '../../ChatBot/ChatBot';
 import EditParagraphActPha from './EditParagraphActPha';
+import DisinfectantEditor from '../Hygiene/selectionBarEditor'
 
 const EditStatisticsPage = () => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -35,6 +36,8 @@ const EditStatisticsPage = () => {
         return <TransplantDiseasesInput />;
       case 'EditStatisticsPage':
         return <EditParagraphActPha/>
+      case 'DisinfectantEditor':
+        return <DisinfectantEditor/>  
       
       default:
         return <p>Veuillez sélectionner une statistique à modifier</p>;
@@ -56,6 +59,7 @@ const EditStatisticsPage = () => {
           <option value="transplantActivity">Activité de transplantation au fil des années</option>
           <option value="transplantDiseases">Maladies couvertes par la transplantation</option>
           <option value="EditStatisticsPage">Paragraphe sur l'activité pharmaceutique</option>
+          <option value="DisinfectantEditor">Utilisation des désinfactants</option>
             
         </select>
 
