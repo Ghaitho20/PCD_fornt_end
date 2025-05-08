@@ -31,15 +31,13 @@ const ContactForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (validateForm()) {
       try {
-        const token = getToken(); // Récupérer le token
         const response = await fetch("http://localhost:8080/api/contact", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Ajout du token dans l'en-tête
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(formData),
         });
@@ -124,10 +122,10 @@ const ContactForm = () => {
             </div>
             
             <div className="w-full md:w-1/3 bg-[#333D79] text-white p-6 rounded-lg">
-              <h2 className="text-lg font-bold mb-4">Contact Us For Any Information</h2>
-              <p className="mb-2"><strong>Location:</strong> 2005 Stokes Isle Apt. 896, Venaville 10010, USA</p>
-              <p className="mb-2"><strong>Email & Phone:</strong> info@yourdomain.com, (+68) 120034509</p>
-              <p className="mb-2"><strong>Follow Us:</strong></p>
+              <h2 className="text-lg font-bold mb-4">Contactez nous pour n'importe quelle information</h2>
+              <p className="mb-2"><strong>Localisation:</strong>13, rue Djebel Lakhdhar Bab Saadoun-Tunis-1006</p>
+              <p className="mb-2"><strong>Email & Phone:</strong> Centredegreffe@gmail.com, (+216)71 568 903</p>
+              <p className="mb-2"><strong>Suivez-nous:</strong></p>
               <div className="flex items-center gap-4">
                 <a href="#" className="hover:text-gray-300"><FaFacebook /></a>
                 <a href="#" className="hover:text-gray-300"><FaInstagram /></a>
@@ -139,20 +137,20 @@ const ContactForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-4xl mx-auto">
             <div className="bg-green bg-opacity-90 shadow-lg p-6 rounded-lg text-center">
               <FaPhoneAlt className="text-3xl text-blue-500 mx-auto mb-2 hover:animate-bounce" />
-              <p className="text-lg font-semibold text-[#333D79]">Contact Number</p>
-              <p>+001 123 456 790</p>
-              <p>+002 3424 44 00</p>
+              <p className="text-lg font-semibold text-[#333D79]">Numéro de Tel</p>
+              <p>(+216)71 568 903</p>
+              
             </div>
             <div className="bg-green bg-opacity-90 shadow-lg p-6 rounded-lg text-center">
               <FaEnvelope className="text-3xl text-red-500 mx-auto mb-2 hover:animate-bounce" />
-              <p className="text-lg font-semibold text-[#333D79]">Email Address</p>
-              <p>info@yourdomain.com</p>
-              <p>example@support.com</p>
+              <p className="text-lg font-semibold text-[#333D79]">Adresse Mail </p>
+              <p>Centredegreffe@gmail.com</p>
+            
             </div>
             <div className="bg-green bg-opacity-90 shadow-lg p-6 rounded-lg text-center">
               <FaMapMarkerAlt className="text-3xl text-green-500 mx-auto mb-2 hover:animate-bounce" />
-              <p className="text-lg font-semibold text-[#333D79]">Address</p>
-              <p>2005 Stokes Isle Apt. 896, Venaville 10010, USA</p>
+              <p className="text-lg font-semibold text-[#333D79]">Addresse</p>
+              <p>13, rue Djebel Lakhdhar Bab Saadoun-Tunis-1006</p>
             </div>
           </div>
         </div>

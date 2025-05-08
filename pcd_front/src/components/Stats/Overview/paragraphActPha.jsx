@@ -10,22 +10,20 @@ const ParagraphActPha = () => {
   useEffect(() => {
     const getParagraph = async () => {
       try {
-        const token = getToken(); // ✅ Récupération du token
-
         const response = await fetch('http://localhost:8080/ParagraphActPha', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`, // ✅ Envoi du token
+            // Aucun token requis
           },
         });
-
+  
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-
+  
         const data = await response.json();
         console.log('API Response :', data);
-
+  
         if (Array.isArray(data) && data.length > 0 && data[0].paragraph) {
           setParagraph(data[0].paragraph);
         }
@@ -34,9 +32,10 @@ const ParagraphActPha = () => {
         alert("Erreur lors de la récupération du paragraphe.");
       }
     };
-
+  
     getParagraph();
   }, []);
+  
 
   return (
     <div className={styles.ParagraphActPhaContainer}>

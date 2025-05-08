@@ -14,22 +14,17 @@ const Hygiene = () => {
   useEffect(() => {
     const fetchGerms = async () => {
       try {
-        const token = getToken(); // ✅ Récupération du token
-
-        const response = await axios.get("http://localhost:8080/germs", {
-          headers: {
-            Authorization: `Bearer ${token}` // ✅ Envoi du token dans les headers
-          }
-        });
-
+        const response = await axios.get("http://localhost:8080/germs");
+  
         setGerms(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des germes :", error);
       }
     };
-
+  
     fetchGerms();
   }, []);
+  
 
   return (
     <div className="disease-overview-container ">

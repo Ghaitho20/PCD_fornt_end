@@ -14,46 +14,38 @@ function SelectionBar() {
   useEffect(() => {
     const getLists = async () => {
       try {
-        const token = getToken();
-        const response = await fetch("http://localhost:8080/utilizations/Lists", {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await fetch("http://localhost:8080/utilizations/Lists");
         const data = await response.json();
         setData(data);
       } catch (error) {
         console.log(error.message);
-        
       }
     };
-
+  
     getLists();
   }, []);
-
+  
   const handleGenerate = async () => {
     console.log({ Year, Service, Surface, Disinfectant });
     try {
-      const token = getToken();
       const response = await fetch(
-        `http://localhost:8080/utilizations?disinf=${Disinfectant}&year=${Year}&service=${Service}&surface=${Surface}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+        `http://localhost:8080/utilizations?disinf=${Disinfectant}&year=${Year}&service=${Service}&surface=${Surface}`
       );
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
       const data = await response.json();
-      console.log("API Response:", data); 
+      console.log("API Response:", data);
       const transformed = data.map(([name, quantity]) => ({ name, quantity }));
       console.log("Transformed :", transformed);
+  
       if (transformed.length === 0) {
         alert("Invalid Input or no data is available !");
         return;
       }
+  
       setChartData(transformed);
       setYear("Année");
       setService("Service");
@@ -63,6 +55,7 @@ function SelectionBar() {
       console.log('Fetch error:', err.message);
     }
   };
+  
 
   return (
     <>

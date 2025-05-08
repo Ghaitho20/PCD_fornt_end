@@ -75,11 +75,7 @@ const ActualiteComp = () => {
             try {
                 const token = getToken();
     
-                const response = await axios.get('http://localhost:8080/api/actualites', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await axios.get('http://localhost:8080/api/actualites');
     
                 setActualites(response.data);
             } catch (err) {

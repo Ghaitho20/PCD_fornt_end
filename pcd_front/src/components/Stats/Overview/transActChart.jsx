@@ -25,20 +25,18 @@ const TransActChart = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const token = getToken();
-
         const response = await fetch('http://localhost:8080/TransAct', {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Aucune autorisation nécessaire
           },
         });
-
+  
         if (!response.ok) {
           console.log(response.statusText);
           return;
         }
-
+  
         const data = await response.json();
         const recent = data
           .sort((a, b) => b.year - a.year)
@@ -47,24 +45,25 @@ const TransActChart = () => {
         
         setRecentdata(recent);
         setData(data);
-
+  
         const n1 = data.reduce((acc, item) => acc + item.nbAllographs, 0);
         const n2 = data.reduce((acc, item) => acc + item.nbAutographs, 0);
         const n3 = n1 + n2;
-
+  
         setNbAllographs(n1);
         setNbAutographs(n2);
         setNbTotalop(n3);
-
+  
         console.log('API Response:', data);
       } catch (err) {
         console.error('Erreur API:', err.message);
         alert("Erreur lors de la récupération des données de greffe.");
       }
     };
-
+  
     getData();
   }, []);
+  
 
   return (
     <div style={{ width: "80%", display: 'flex', flexDirection: 'column', alignItems: 'center', margin: "50px auto" }}>

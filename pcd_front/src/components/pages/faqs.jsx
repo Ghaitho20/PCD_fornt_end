@@ -11,11 +11,7 @@ const Faqs = () => {
     const fetchFaqs = async () => {
       try {
         const token = getToken();
-        const response = await axios.get("/api/faqs/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get("/api/faqs/");
         setFaqs(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des FAQ:", error);

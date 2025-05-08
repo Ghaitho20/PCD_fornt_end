@@ -16,36 +16,31 @@ export const Numbers = () => {
 
     useEffect(() => {
         const getStats = async () => {
-            try {
-                const token = getToken();
-                if (!token) {
-                    throw new Error('Token manquant. Veuillez vous reconnecter.');
-                }
-
-                const response = await fetch("http://localhost:8080/StaffPatientStats", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Erreur lors de la récupération des statistiques !");
-                }
-
-                const data = await response.json();
-                setDoctorTarget(data[0].doctors || 0);
-                setNurseTarget(data[0].nurses || 0);
-                setPatientTarget(data[0].patients || 0);
-            } catch (err) {
-                console.log("Erreur :", err.message);
-                setError(err.message);
+          try {
+            const response = await fetch("http://localhost:8080/StaffPatientStats", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+      
+            if (!response.ok) {
+              throw new Error("Erreur lors de la récupération des statistiques !");
             }
+      
+            const data = await response.json();
+            setDoctorTarget(data[0].doctors || 0);
+            setNurseTarget(data[0].nurses || 0);
+            setPatientTarget(data[0].patients || 0);
+          } catch (err) {
+            console.log("Erreur :", err.message);
+            setError(err.message);
+          }
         };
-
+      
         getStats();
-    }, []);
+      }, []);
+      
 
     const animateCounter = (currentCount, targetCount, setCount, intervalTime) => {
         if (currentCount >= targetCount) return;

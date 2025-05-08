@@ -61,24 +61,17 @@ export const MaladiePriseEnCharge = () => {
   useEffect(() => {
     const getData1 = async () => {
       try {
-        const token = getToken(); // Get the token from localStorage through the utility function
-        if (!token) {
-          console.log("No token found, please log in.");
-          return;
-        }
-
         const response = await fetch('http://localhost:8080/MaladiePriseEnCharge', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`, // Send the token in the Authorization header
             'Content-Type': 'application/json',
           },
         });
-
+  
         if (!response.ok) {
           throw new Error(response.statusText);
         }
-
+  
         const data = await response.json();
         console.log('Retrieved Data from API', data);
         setData1(data);
@@ -86,8 +79,10 @@ export const MaladiePriseEnCharge = () => {
         console.log('Error fetching data:', err.message);
       }
     };
+  
     getData1();
   }, []);
+  
 
   // Generate random colors for the pie chart
   const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;

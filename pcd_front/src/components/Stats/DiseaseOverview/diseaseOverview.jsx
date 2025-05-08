@@ -20,14 +20,13 @@ const DiseaseOverview = () => {
   };
     
   // Fetch diseases on component mount
-  useEffect(() => {
-    axios.get("http://localhost:8080/diseases", {
-      headers: getAuthHeaders(),
-    })
-      .then(response => setDiseases(response.data))
-      .catch(error => console.error("Error fetching diseases:", error));
+// Fetch diseases on component mount
+useEffect(() => {
+  axios.get("http://localhost:8080/diseases")
+    .then(response => setDiseases(response.data))
+    .catch(error => console.error("Error fetching diseases:", error));
+}, []);
 
-  }, []);
 
 
   return (

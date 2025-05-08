@@ -12,11 +12,7 @@ const Telechar = () => {
     const fetchDocuments = async () => {
       try {
         const token = getToken();
-        const response = await axios.get("/api/documents", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get("/api/documents");
         setDocuments(response.data);
       } catch (error) {
         console.error("Erreur lors de la récupération des documents:", error);
@@ -31,9 +27,7 @@ const Telechar = () => {
       const token = getToken();
       const response = await axios.get(`/api/documents/${documentId}`, {
         responseType: 'blob',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));

@@ -22,35 +22,30 @@ const PatientDemographicsChart = () => {
   useEffect(() => {
     const handleData = async () => {
       try {
-        const token = getToken();
-        if (!token) {
-          throw new Error('Token manquant. Veuillez vous reconnecter.');
-        }
-
         const response = await fetch("http://localhost:8080/patientDemographics", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         });
-
+  
         if (!response.ok) {
           throw new Error("Échec de récupération des données !");
         }
-
+  
         const data = await response.json();
         console.log(data);
         setChartData(data);
-
+  
       } catch (err) {
         console.error("Erreur de récupération :", err);
         setError(err.message);
       }
     };
-
+  
     handleData();
   }, []);
+  
 
   const data = {
     labels: ['0-18', '19-30', '31-45', '46-60', '61+'],
